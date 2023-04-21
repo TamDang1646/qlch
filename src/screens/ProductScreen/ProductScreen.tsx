@@ -1,0 +1,244 @@
+import * as React from 'react';
+
+import {
+  FlatList,
+  Image,
+  SafeAreaView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  useWindowDimensions,
+  View,
+} from 'react-native';
+import {
+  TabBar,
+  TabView,
+} from 'react-native-tab-view';
+
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+
+import { verticalScale } from '../../components/Scales';
+import TextBase from '../../components/TextBase';
+import { colors } from '../../constants';
+import { products } from '../../mockData/product';
+
+interface Props {
+  navigation: any
+}
+const ProductScreen = (props: Props) => {
+  const key = {
+    quan: 'quan',
+    ao: 'ao',
+    giay: 'giay',
+    phukien: 'phukien'
+  }
+  const [routes] = React.useState([
+    { key: key.quan, title: 'Quần' },
+    { key: key.ao, title: 'Áo' },
+    { key: key.giay, title: 'Giày-Dép' },
+    { key: key.phukien, title: 'Phụ kiện' },
+  ]);
+  const [index, setIndex] = React.useState<number>(0);
+  const [quanList, setQuanList] = React.useState([]);
+  const [aoList, setAoList] = React.useState([]);
+  const [giayList, setGiayList] = React.useState([]);
+  const [phukienList, setPhukienList] = React.useState([]);
+  const [searchQuery, setSearchQuery] = React.useState('');
+  React.useEffect(() => {
+    setQuanList(products.filter(item => item.type == key.quan))
+    setAoList(products.filter(item => item.type == key.ao))
+    setGiayList(products.filter(item => item.type == key.giay))
+    setPhukienList(products.filter(item => item.type == key.phukien))
+  }, [])
+
+  const handleSearch = () => {
+    // handle search logic here
+  };
+
+  const handleClear = () => {
+    setSearchQuery('');
+  };
+  const onPressMenu = () => {
+
+  }
+  const _renderIcon = ({ route, focused }: { route: { key: string, title: string }, focused: boolean }) => (
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: focused ? '#FF8500' : 'white',
+        // flex: 1,
+        width: verticalScale(100),
+        height: verticalScale(38),
+        borderColor: '#FF8500',
+        borderWidth: 1,
+        borderRadius: verticalScale(19),
+        // margin: verticalScale(8),
+        // padding: verticalScale(10),
+        marginHorizontal: verticalScale(0),
+      }}>
+      <TextBase title={route.title} style={{ color: focused ? 'white' : '#FF8500', }} />
+    </View>
+  );
+  const _renderTabBar = (props: any) => {
+    return (
+      <TabBar
+        {...props}
+        indicatorStyle={{ backgroundColor: 'transparent', }}
+        renderLabel={_renderIcon}
+        // elevation={0}
+        style={{
+          backgroundColor: 'transparent',
+          // borderBottomWidth: 1.5,
+          // borderBottomColor: colors.borderGreyColor,
+          alignSelf: 'center',
+          // width: verticalScale(),
+          height: verticalScale(44),
+          margin: verticalScale(8),
+          // marginHorizontal: verticalScale(16),
+          // borderWidth: 1
+        }}
+        scrollEnabled
+        tabStyle={{ margin: 0, padding: 0, width: verticalScale(110), }}
+        pressColor='transparent'
+
+      />
+    );
+  };
+  const renderBills = ({ item }:{item: any}) => {
+    return <View style={styles.prodItem}>
+        <Image source={{uri:item.images?.[0]}} style={{
+          width:'100%',
+          height:'60%',
+      }} resizeMode='cover' />
+      <View style={{flex:1,overflow:'hidden',paddingVertical:verticalScale(4),paddingHorizontal:verticalScale(8)}}>
+
+      <TextBase title={item.name} style={[styles.titleDetail,{fontSize:verticalScale(14)}]} numberOfLines={2} ellipsizeMode='tail'/>
+      <TextBase title={item.price} style={styles.titleDetail} />
+      <TextBase title={`Size: ${item.size}`} style={styles.titleDetail} />
+      </View>
+    </View>
+  }
+  const _renderItemView = (data: any) => {
+    return (
+      <View style={{ flex: 1 }}>
+        <FlatList
+          data={data}
+          keyExtractor={(item: any) => `item-${item.id}`}
+          renderItem={renderBills}
+          numColumns={2}
+          style={{
+            // alignItems: 'flex-start',
+            margin:verticalScale(16)
+          }}
+          showsHorizontalScrollIndicator={false}
+          showsVerticalScrollIndicator={false}
+        // isRefresh={isRefresh}
+        />
+      </View>
+    )
+  };
+  const layout = useWindowDimensions();
+  const _renderTabView = ({ route }: { route: { key: string, title: string } }) => {
+    // const { dataTotal, dataBuy, dataSpend } = state;
+
+    switch (route.key) {
+      case key.quan:
+        return _renderItemView(quanList);
+      case key.ao:
+        return _renderItemView(aoList);
+      case key.giay:
+        return _renderItemView(giayList);
+      case key.phukien:
+        return _renderItemView(phukienList);
+      default:
+        return null;
+    }
+  };
+  return (
+    <SafeAreaView style={styles.container}>
+      {/* <TouchableOpacity onPress={() => onPressMenu()}
+                style={styles.menu}>
+                <FontAwesomeIcon icon={faHouse} size={verticalScale(50)} />
+            </TouchableOpacity>
+            <Text>ProductScreen</Text> */}
+      <View style={styles.inputWrapper}>
+        <FontAwesomeIcon icon={faSearch} size={verticalScale(18)} color={colors.grayColor} />
+        {/* <Ionicons name="ios-search" size={24} color="#C7C7CD" /> */}
+        <TextInput
+          placeholder="Search"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
+          onSubmitEditing={handleSearch}
+          style={styles.input}
+        />
+        {searchQuery.length > 0 && (
+          <TouchableOpacity onPress={handleClear}>
+            {/* <Ionicons name="ios-close" size={24} color="#C7C7CD" /> */}
+          </TouchableOpacity>
+        )}
+      </View>
+      <TabView
+        navigationState={{ index, routes }}
+        renderTabBar={_renderTabBar}
+        renderScene={_renderTabView}
+        onIndexChange={setIndex}
+        initialLayout={{ width: layout.width }}
+        swipeEnabled={false}
+      />
+    </SafeAreaView>
+  );
+}
+export default ProductScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
+  menu: {
+    width: verticalScale(50),
+    height: verticalScale(50),
+    overflow: 'hidden',
+    margin: verticalScale(16)
+  },
+  inputWrapper: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 20,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.borderGreyColor,
+    margin: verticalScale(16)
+  },
+  input: {
+    flex: 1,
+    marginLeft: 10,
+    height: '90%',
+    fontSize: verticalScale(16)
+  },
+  prodItem: {
+    backgroundColor:'white',
+    width: verticalScale(150),
+    height: verticalScale(200),
+    borderRadius: 10,
+    margin:verticalScale(16),
+    overflow:'hidden',
+    // borderWidth:1,
+    borderColor:colors.grayColor,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+    
+    elevation: 6,
+  },
+  titleDetail: {
+    fontSize: verticalScale(12)
+  }
+})
+// ... other code from the previous section

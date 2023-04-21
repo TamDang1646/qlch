@@ -1,0 +1,25 @@
+export const colors = {
+  primary: '#3F51B5',
+  accent: '#AF2923',
+  containerBg: '#FFF',
+  textColor: '#000',
+  borderColor: '#ccc',
+  mainColor: '#580B65',
+  mainGreyColor: '#D6D6D6',
+  mainBottomBarBGColorEE: '#D6D6D6',
+  inputErrorColor: '#AF2923',
+  inputColor: 'black',
+  warningColor: '#AF2923',
+  textDesColor: '#838383',
+  inputBorderColor: '#DEDEDE',
+  selectedColor: '#FF8500',
+  greyColor: '#707070',
+  borderGreyColor:'#EFEFEF',
+  textRedColor: '#E6161A',
+  redColor: '#E6161A',
+  orangeColor: '#FF8500',
+  whiteColor:'#FFFFFF',
+  grayColor: '#b5b5b5',
+  greenColor: '#84C200'
+};
+
