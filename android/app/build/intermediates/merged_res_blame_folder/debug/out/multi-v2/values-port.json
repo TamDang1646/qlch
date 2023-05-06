@@ -4,7 +4,7 @@
             "outputFile": "com.qfashion.app-mergeDebugResources-29:/values-port/values-port.xml",
             "map": [
                 {
-                    "source": "/Users/zetamobile/.gradle/caches/transforms-3/be9a285d7d94d789380b4b7ef5365ae2/transformed/appcompat-1.4.1/res/values-port/values-port.xml",
+                    "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\be9a285d7d94d789380b4b7ef5365ae2\\transformed\\appcompat-1.4.1\\res\\values-port\\values-port.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

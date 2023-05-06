@@ -4,7 +4,7 @@
             "outputFile": "com.qfashion.app-mergeDebugResources-29:/values-v23/values-v23.xml",
             "map": [
                 {
-                    "source": "/Users/zetamobile/.gradle/caches/transforms-3/4af7f0d23266db3f5bdb15fc939a61bd/transformed/material-1.1.0/res/values-v23/values-v23.xml",
+                    "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\4af7f0d23266db3f5bdb15fc939a61bd\\transformed\\material-1.1.0\\res\\values-v23\\values-v23.xml",
                     "from": {
                         "startLines": "2,6",
                         "startColumns": "4,4",
@@ -23,7 +23,7 @@
                     }
                 },
                 {
-                    "source": "/Users/zetamobile/.gradle/caches/transforms-3/be9a285d7d94d789380b4b7ef5365ae2/transformed/appcompat-1.4.1/res/values-v23/values-v23.xml",
+                    "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\be9a285d7d94d789380b4b7ef5365ae2\\transformed\\appcompat-1.4.1\\res\\values-v23\\values-v23.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,20,34,35,36,39,43,44,45,46",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -42,7 +42,7 @@
                     }
                 },
                 {
-                    "source": "/Users/zetamobile/.gradle/caches/transforms-3/b618d334ebbce8811572224b8cbc3caa/transformed/cardview-1.0.0/res/values-v23/values-v23.xml",
+                    "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\b618d334ebbce8811572224b8cbc3caa\\transformed\\cardview-1.0.0\\res\\values-v23\\values-v23.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
