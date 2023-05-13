@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.qfashion.app-mergeDebugResources-29:/values-zh-rTW/values-zh-rTW.xml",
+            "outputFile": "com.qfashion.app-mergeDebugResources-31:/values-zh-rTW/values-zh-rTW.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\46288970f3df631865ec6c63ce3e36a6\\transformed\\jetified-play-services-basement-17.0.0\\res\\values-zh-rTW\\values.xml",
@@ -18,6 +18,23 @@
                         "startOffsets": "3693",
                         "endColumns": "161",
                         "endOffsets": "3850"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\3f950f02d0c2bb52db14bef1e688dbfa\\transformed\\jetified-ucrop-2.2.6-native\\res\\values-zh-rTW\\values-zh-rTW.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,132,186,240,287",
+                        "endColumns": "76,53,53,46,116",
+                        "endOffsets": "127,181,235,282,399"
+                    },
+                    "to": {
+                        "startLines": "49,50,51,52,53",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "5159,5236,5290,5344,5391",
+                        "endColumns": "76,53,53,46,116",
+                        "endOffsets": "5231,5285,5339,5386,5503"
                     }
                 },
                 {

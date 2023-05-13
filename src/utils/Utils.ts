@@ -1,29 +1,32 @@
+import { Platform } from 'react-native';
+import { request } from 'react-native-permissions';
+
 export const converTimeStamp = (timeStamp?: number) => {
-    // console.log(timeStamp);
-    
-    // convert unix timestamp to milliseconds
-    let ts_ms = timeStamp ? timeStamp*1 : new Date().getTime();
-  
-    // initialize new Date object
-    let date_ob = new Date(ts_ms);
-  
-    // year as 4 digits (YYYY)
-    let year = date_ob.getFullYear();
-  
-    // month as 2 digits (MM)
-    let month = ('0' + (date_ob.getMonth() + 1)).slice(-2);
-  
-    // date as 2 digits (DD)
-    let date = ('0' + date_ob.getDate()).slice(-2);
-    let fullDateTime = date + '/' + month + '/' + year
-  
-    return fullDateTime;
+  // console.log(timeStamp);
+
+  // convert unix timestamp to milliseconds
+  let ts_ms = timeStamp ? timeStamp * 1 : new Date().getTime();
+
+  // initialize new Date object
+  let date_ob = new Date(ts_ms);
+
+  // year as 4 digits (YYYY)
+  let year = date_ob.getFullYear();
+
+  // month as 2 digits (MM)
+  let month = ('0' + (date_ob.getMonth() + 1)).slice(-2);
+
+  // date as 2 digits (DD)
+  let date = ('0' + date_ob.getDate()).slice(-2);
+  let fullDateTime = date + '/' + month + '/' + year
+
+  return fullDateTime;
 }
 export const convertFullTimeStamp = (timeStamp: number) => {
 
   // convert unix timestamp to milliseconds
   // const ts_ms = timeStamp * 1000;
-  let ts_ms = timeStamp ? timeStamp*1 : new Date().getTime();
+  let ts_ms = timeStamp ? timeStamp * 1 : new Date().getTime();
 
   // initialize new Date object
   const date_ob = new Date(ts_ms);
@@ -44,7 +47,7 @@ export const convertFullTimeStamp = (timeStamp: number) => {
 export const getMoneyFormat = (str: string, typeMoneyFormat = '100,000.00'): string => {
   return dotMoney(str, typeMoneyFormat);
 }
-const dotMoney = (str: string, typeMoneyFormat:string): string => {
+const dotMoney = (str: string, typeMoneyFormat: string): string => {
   try {
     let thousandsSeparator = '';
     let decimalSeparator = '.';
@@ -112,4 +115,13 @@ export const getTimeFormat = (day: Date) => {
   // date as 2 digits (DD)
   const date = ('0' + day.getDate()).slice(-2);
   return year + '-' + month + '-' + date
+}
+export async function checkPermission(typeAndroid: any, typeIos: any) {
+  // console.log("checkPermission -> typeIos", typeIos)
+  const result = await request(Platform.select({
+    android: typeAndroid,
+    ios: typeIos,
+  }));
+  // console.log("checkPermission -> result", result)
+  return result;
 }

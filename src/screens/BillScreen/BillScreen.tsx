@@ -3,11 +3,13 @@ import * as React from 'react';
 
 import {
     FlatList,
+    Image,
     SafeAreaView,
     StyleSheet,
     TouchableOpacity,
     View,
 } from 'react-native';
+import Modal from 'react-native-modal';
 
 import {
     faAdd,
@@ -17,31 +19,34 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
-import R from '../../components/R';
+import Alert from '../../components/Alert';
+import BaseButton from '../../components/BaseButton';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
+import { colors } from '../../constants';
+import { images } from '../../constants/images';
 import { bills } from '../../mockData/bills';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
 import { converTimeStamp } from '../../utils/Utils';
-import BillsComponentView from '../ComponentCustom/BillsComponentView';
 
 interface Props {
     navigation: any
 }
 const BillScreen = (props: Props) => {
+    const [visibleFilter, setVisibleFilter] = React.useState(false)
+    const [startDate, setStartDate] = React.useState('');
+    const [endDate, setEndDate] = React.useState('');
     const onClose = () => {
         console.log('close');
-        R.Alert.close();
+        Alert.close();
     }
-    const onPressEdit = (item:any) => {
+    const onPressEdit = (item: any) => {
         onClose?.()
-        NavigationService.navigate(routes.BILL_CREATE_EDIT_SCREEN,{bill:item,type:'edit'})
+        NavigationService.navigate(routes.BILL_CREATE_EDIT_SCREEN, { bill: item, type: 'edit' })
     }
     const onPressBill = (item: any) => {
-        R.Alert.alert({
-            renderContent: () => <BillsComponentView item={item} onClose={onClose} />,
-        })
+        NavigationService.navigate(routes.BILLS_VIEW, { item })
     }
     const renderBills = ({ item }: { item: any }) => {
         return (
@@ -91,7 +96,129 @@ const BillScreen = (props: Props) => {
             </TouchableOpacity>
         )
     }
+    const onSelectTime = (index: number) => {
+        switch (index) {
+            case 0:
+                break;
+            case 1:
+                break;
+            default:
+                break;
+        }
+    }
+    const onNextPress = () => {
 
+    }
+    const arrangeModal = () => {
+        return (
+            <Modal
+                onBackdropPress={() => setVisibleFilter(false)}
+                isVisible={visibleFilter}
+                style={{
+                    justifyContent: 'flex-end',
+                    alignItems: 'center',
+                    width: '100%',
+                    alignSelf: 'center',
+                    margin: 0,
+                }}
+                onBackButtonPress={() => setVisibleFilter(false)}
+                backdropTransitionOutTiming={0}
+                animationIn="slideInUp"
+                animationOutTiming={500}
+                animationOut="slideOutDown"
+            >
+                <View
+                    style={{
+                        width: '100%',
+                        backgroundColor: colors.containerBg,
+                        borderTopLeftRadius: verticalScale(20),
+                        borderTopRightRadius: verticalScale(20),
+                        height: verticalScale(326),
+                        alignItems: 'center',
+                    }}
+                >
+                    <View
+                        style={{
+                            flexDirection: 'row',
+                            backgroundColor: '#F5F5F8',
+                            width: '100%',
+                            height: verticalScale(50),
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            borderTopLeftRadius: verticalScale(20),
+                            borderTopRightRadius: verticalScale(20),
+
+                        }}
+                    >
+
+                        <TouchableOpacity
+                            onPress={() => {
+                                setVisibleFilter(false)
+                            }}
+                            style={{
+                                width: verticalScale(50),
+                                height: verticalScale(50),
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                position: 'absolute',
+                                right: 0,
+                            }}
+                        >
+                            <Image
+                                style={{
+                                    tintColor: colors.greyColor,
+                                    width: verticalScale(18),
+                                    height: verticalScale(18),
+                                }}
+                                source={images.icon_close}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            marginTop: verticalScale(10),
+                            width: '100%',
+                            backgroundColor: colors.containerBg,
+                        }}
+                    >
+                        <View style={{ justifyContent: 'space-between', marginTop: verticalScale(20), marginBottom: verticalScale(16), marginHorizontal: verticalScale(16) }}>
+                            <TouchableOpacity
+                                style={{ ...styles.timePicker, marginLeft: 0 }}
+                                onPress={() => onSelectTime(0)}
+                            >
+                                <TextBase title={'Thuê từ ngày'} style={{ position: 'absolute', top: -15, left: 7, flexDirection: 'row' }} />
+
+                                {startDate?.length > 0
+                                    ? <TextBase title={converTimeStamp(startDate)} style={styles.time} />
+                                    : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
+                                }
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={{ ...styles.timePicker, marginRight: 0 }}
+                                onPress={() => onSelectTime(1)}
+                            >
+                                <TextBase title={'Đến ngày'} style={{ position: 'absolute', top: -15, left: 7, flexDirection: 'row' }} />
+                                {endDate && endDate?.length > 0
+                                    ? <TextBase title={converTimeStamp(endDate)} style={styles.time} />
+                                    : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
+                                }
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                    <BaseButton title={'Sắp xếp'} style={{
+                        width: verticalScale(150),
+                        alignSelf: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        marginVertical: verticalScale(10)
+                    }}
+                        onPress={onNextPress}
+                    />
+                </View>
+            </Modal>
+        );
+    }
     const renderBillsToday = () => {
         return <View style={{ paddingVertical: verticalScale(16) }}>
             <View style={{
@@ -104,21 +231,25 @@ const BillScreen = (props: Props) => {
 
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                     <FontAwesomeIcon icon={faFilter} size={20} style={{ marginRight: 4 }} color='#A8A8A8' />
-                    <TextBase title={'Filter'} style={{
-                        fontSize: verticalScale(18),
-                        color: '#A8A8A8'
-                    }}
+                    <TouchableOpacity
                         onPress={() => {
-                            console.log('sê moẻ');
+                            setVisibleFilter(true)
                         }}
-                    />
+                    >
+                        <TextBase title={'Filter'} style={{
+                            fontSize: verticalScale(18),
+                            color: '#A8A8A8'
+                        }}
+
+                        />
+                    </TouchableOpacity>
                 </View>
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                     <FontAwesomeIcon icon={faAdd} size={20} style={{ marginRight: 4 }} color='#A8A8A8' />
 
                     <TextBase title={'Tạo hoá đơn mới'}
                         onPress={() => {
-                            console.log('sê moẻ');
+                            NavigationService.navigate(routes.BILL_CREATE_EDIT_SCREEN, { type: 'add' })
                         }}
                         style={{
                             fontSize: verticalScale(18),
@@ -140,6 +271,7 @@ const BillScreen = (props: Props) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderBillsToday()}
+            {arrangeModal()}
         </SafeAreaView>
     );
 }
@@ -185,6 +317,20 @@ const styles = StyleSheet.create({
     },
     itemLableIcon: {
         marginRight: verticalScale(8)
-    }
+    },
+    timePicker: {
+        height: verticalScale(50),
+        borderWidth: verticalScale(1),
+        marginHorizontal: verticalScale(8),
+        marginLeft: 0,
+        marginBottom: verticalScale(16),
+        borderRadius: verticalScale(8),
+        borderColor: colors.inputBorderColor,
+        backgroundColor: 'white'
+    },
+    time: {
+        margin: verticalScale(16),
+        marginHorizontal: verticalScale(24)
+    },
 })
 // ... other code from the previous section

@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.qfashion.app-mergeDebugResources-29:/values-si/values-si.xml",
+            "outputFile": "com.qfashion.app-mergeDebugResources-31:/values-si/values-si.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\08e1174eef2c209ea18090f1084adbcb\\transformed\\core-1.7.0\\res\\values-si\\values-si.xml",

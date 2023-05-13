@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.qfashion.app-mergeDebugResources-29:/values-fr/values-fr.xml",
+            "outputFile": "com.qfashion.app-mergeDebugResources-31:/values-fr/values-fr.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\e119862b677da2b2e1ecc2c5dd9a0d3b\\transformed\\jetified-play-services-base-17.0.0\\res\\values-fr\\values.xml",
@@ -18,6 +18,23 @@
                         "startOffsets": "2847,2955,3167,3299,3410,3640,3775,3926,4292,4529,4643,4859,4997,5216,5425,5528,5625",
                         "endColumns": "107,211,131,110,229,134,150,141,236,113,215,137,218,208,102,96,112",
                         "endOffsets": "2950,3162,3294,3405,3635,3770,3921,4063,4524,4638,4854,4992,5211,5420,5523,5620,5733"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\3f950f02d0c2bb52db14bef1e688dbfa\\transformed\\jetified-ucrop-2.2.6-native\\res\\values-fr\\values-fr.xml",
+                    "from": {
+                        "startLines": "2,3,4",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "55,124,182",
+                        "endColumns": "68,57,52",
+                        "endOffsets": "119,177,230"
+                    },
+                    "to": {
+                        "startLines": "49,50,51",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "5926,5995,6053",
+                        "endColumns": "68,57,52",
+                        "endOffsets": "5990,6048,6101"
                     }
                 },
                 {

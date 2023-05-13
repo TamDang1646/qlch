@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "com.qfashion.app-mergeDebugResources-29:/values-am/values-am.xml",
+            "outputFile": "com.qfashion.app-mergeDebugResources-31:/values-am/values-am.xml",
             "map": [
                 {
                     "source": "C:\\Users\\ghost\\.gradle\\caches\\transforms-3\\46288970f3df631865ec6c63ce3e36a6\\transformed\\jetified-play-services-basement-17.0.0\\res\\values-am\\values.xml",

@@ -4,4 +4,5 @@ export const images = {
     icon_dropdown: require('../../assets/images/icon_dropdown.png'),
     icon_search: require('../../assets/images/search-glyph.png'),
     icon_close: require('../../assets/images/x.png'),
+    defaultImage: require('../../assets/images/default_product.gif'),
 }

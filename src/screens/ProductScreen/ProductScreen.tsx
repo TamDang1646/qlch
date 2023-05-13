@@ -22,18 +22,20 @@ import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { colors } from '../../constants';
 import { products } from '../../mockData/product';
+import NavigationService from '../../navigation/NavigationService';
+import { routes } from '../../navigation/Routes';
 
 interface Props {
   navigation: any
 }
 const ProductScreen = (props: Props) => {
   const key = {
-    quan: 'quan',
-    ao: 'ao',
-    giay: 'giay',
-    phukien: 'phukien'
+    quan: '0',
+    ao: '1',
+    giay: '2',
+    phukien: '3'
   }
-  const [routes] = React.useState([
+  const [tapRoutes] = React.useState([
     { key: key.quan, title: 'Quần' },
     { key: key.ao, title: 'Áo' },
     { key: key.giay, title: 'Giày-Dép' },
@@ -51,7 +53,6 @@ const ProductScreen = (props: Props) => {
     setGiayList(products.filter(item => item.type == key.giay))
     setPhukienList(products.filter(item => item.type == key.phukien))
   }, [])
-
   const handleSearch = () => {
     // handle search logic here
   };
@@ -106,19 +107,23 @@ const ProductScreen = (props: Props) => {
       />
     );
   };
-  const renderBills = ({ item }:{item: any}) => {
-    return <View style={styles.prodItem}>
-        <Image source={{uri:item.images?.[0]}} style={{
-          width:'100%',
-          height:'60%',
+  const renderBills = ({ item }: { item: any }) => {
+    return <TouchableOpacity style={styles.prodItem}
+      onPress={() => {
+        NavigationService.navigate(routes.PRODUCT_DETAIL_SCREEN, { item })
+      }}
+    >
+      <Image source={{ uri: item.images?.[0] }} style={{
+        width: '100%',
+        height: '60%',
       }} resizeMode='cover' />
-      <View style={{flex:1,overflow:'hidden',paddingVertical:verticalScale(4),paddingHorizontal:verticalScale(8)}}>
+      <View style={{ flex: 1, overflow: 'hidden', paddingVertical: verticalScale(4), paddingHorizontal: verticalScale(8) }}>
 
-      <TextBase title={item.name} style={[styles.titleDetail,{fontSize:verticalScale(14)}]} numberOfLines={2} ellipsizeMode='tail'/>
-      <TextBase title={item.price} style={styles.titleDetail} />
-      <TextBase title={`Size: ${item.size}`} style={styles.titleDetail} />
+        <TextBase title={item.name} style={[styles.titleDetail, { fontSize: verticalScale(14) }]} numberOfLines={2} ellipsizeMode='tail' />
+        <TextBase title={item.price} style={styles.titleDetail} />
+        <TextBase title={`Size: ${item.size}`} style={styles.titleDetail} />
       </View>
-    </View>
+    </TouchableOpacity>
   }
   const _renderItemView = (data: any) => {
     return (
@@ -130,7 +135,7 @@ const ProductScreen = (props: Props) => {
           numColumns={2}
           style={{
             // alignItems: 'flex-start',
-            margin:verticalScale(16)
+            margin: verticalScale(16)
           }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
@@ -180,7 +185,7 @@ const ProductScreen = (props: Props) => {
         )}
       </View>
       <TabView
-        navigationState={{ index, routes }}
+        navigationState={{ index, routes: tapRoutes }}
         renderTabBar={_renderTabBar}
         renderScene={_renderTabView}
         onIndexChange={setIndex}
@@ -219,14 +224,14 @@ const styles = StyleSheet.create({
     fontSize: verticalScale(16)
   },
   prodItem: {
-    backgroundColor:'white',
+    backgroundColor: 'white',
     width: verticalScale(150),
     height: verticalScale(200),
     borderRadius: 10,
-    margin:verticalScale(16),
-    overflow:'hidden',
+    margin: verticalScale(16),
+    overflow: 'hidden',
     // borderWidth:1,
-    borderColor:colors.grayColor,
+    borderColor: colors.grayColor,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -234,7 +239,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
-    
+
     elevation: 6,
   },
   titleDetail: {

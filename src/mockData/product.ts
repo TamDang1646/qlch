@@ -1,381 +1,381 @@
 export const products = [{
   'id': 1,
-  'name': 'Vinegar - Champagne',
-  'type': 'phukien',
+  'name': 'Corn Syrup',
+  'type': 2,
   'size': [
-    30,
-    27,
-    32,
-    35
+    35,
+    35,
+    34,
+    34
   ],
-  'price': 55828,
-  'quantity': 561,
+  'price': 918428,
+  'quantity': 37,
   'images': [
-    'http://dummyimage.com/779x1256.png/ff4444/ffffff',
-    'http://dummyimage.com/567x1223.png/dddddd/000000',
-    'http://dummyimage.com/1080x1780.png/ff4444/ffffff',
-    'http://dummyimage.com/880x956.png/ff4444/ffffff',
-    'http://dummyimage.com/999x1336.png/5fa2dd/ffffff'
+    'http://dummyimage.com/730x1343.png/ff4444/ffffff',
+    'http://dummyimage.com/606x646.png/dddddd/000000',
+    'http://dummyimage.com/919x1120.png/ff4444/ffffff',
+    'http://dummyimage.com/517x598.png/5fa2dd/ffffff',
+    'http://dummyimage.com/680x703.png/cc0000/ffffff'
   ]
 }, {
   'id': 2,
-  'name': 'Pepper - Gypsy Pepper',
-  'type': 'phukien',
+  'name': 'Longos - Assorted Sandwich',
+  'type': 1,
   'size': [
-    28,
     30,
     28,
-    35
+    34,
+    33
   ],
-  'price': 38139,
-  'quantity': 596,
+  'price': 201175,
+  'quantity': 100,
   'images': [
-    'http://dummyimage.com/637x1771.png/ff4444/ffffff',
-    'http://dummyimage.com/941x1157.png/5fa2dd/ffffff',
-    'http://dummyimage.com/953x1422.png/ff4444/ffffff',
-    'http://dummyimage.com/1023x674.png/ff4444/ffffff',
-    'http://dummyimage.com/911x1255.png/ff4444/ffffff'
+    'http://dummyimage.com/1020x1169.png/dddddd/000000',
+    'http://dummyimage.com/911x542.png/dddddd/000000',
+    'http://dummyimage.com/1043x1178.png/5fa2dd/ffffff',
+    'http://dummyimage.com/707x1125.png/5fa2dd/ffffff',
+    'http://dummyimage.com/929x1442.png/cc0000/ffffff'
   ]
 }, {
   'id': 3,
-  'name': 'Pasta - Fettuccine, Egg, Fresh',
-  'type': 'giay',
+  'name': 'Lettuce - Romaine',
+  'type': 1,
   'size': [
     29,
-    31,
-    27,
-    31
+    33,
+    32,
+    29
   ],
-  'price': 39828,
-  'quantity': 271,
+  'price': 679678,
+  'quantity': 45,
   'images': [
-    'http://dummyimage.com/917x1766.png/5fa2dd/ffffff',
-    'http://dummyimage.com/700x1310.png/dddddd/000000',
-    'http://dummyimage.com/1029x1818.png/ff4444/ffffff',
-    'http://dummyimage.com/935x1749.png/5fa2dd/ffffff',
-    'http://dummyimage.com/933x1296.png/dddddd/000000'
+    'http://dummyimage.com/984x914.png/dddddd/000000',
+    'http://dummyimage.com/812x1046.png/dddddd/000000',
+    'http://dummyimage.com/851x1345.png/5fa2dd/ffffff',
+    'http://dummyimage.com/907x1741.png/dddddd/000000',
+    'http://dummyimage.com/928x763.png/dddddd/000000'
   ]
 }, {
   'id': 4,
-  'name': 'Mcgillicuddy Vanilla Schnap',
-  'type': 'giay',
+  'name': 'Beef - Outside, Round',
+  'type': 2,
   'size': [
-    31,
-    34,
-    28,
-    34
+    27,
+    27,
+    29,
+    32
   ],
-  'price': 89216,
-  'quantity': 172,
+  'price': 907687,
+  'quantity': 64,
   'images': [
-    'http://dummyimage.com/938x591.png/cc0000/ffffff',
-    'http://dummyimage.com/980x902.png/dddddd/000000',
-    'http://dummyimage.com/1052x1439.png/dddddd/000000',
-    'http://dummyimage.com/719x1220.png/ff4444/ffffff',
-    'http://dummyimage.com/564x706.png/cc0000/ffffff'
+    'http://dummyimage.com/1064x1829.png/ff4444/ffffff',
+    'http://dummyimage.com/662x667.png/5fa2dd/ffffff',
+    'http://dummyimage.com/964x766.png/cc0000/ffffff',
+    'http://dummyimage.com/530x607.png/dddddd/000000',
+    'http://dummyimage.com/1080x742.png/ff4444/ffffff'
   ]
 }, {
   'id': 5,
-  'name': 'Capers - Pickled',
-  'type': 'ao',
+  'name': 'Skirt - 24 Foot',
+  'type': 3,
   'size': [
-    28,
-    28,
-    28,
-    27
+    33,
+    33,
+    30,
+    32
   ],
-  'price': 87193,
-  'quantity': 927,
+  'price': 851212,
+  'quantity': 40,
   'images': [
-    'http://dummyimage.com/832x1844.png/cc0000/ffffff',
-    'http://dummyimage.com/517x517.png/ff4444/ffffff',
-    'http://dummyimage.com/928x1114.png/dddddd/000000',
-    'http://dummyimage.com/965x1323.png/dddddd/000000',
-    'http://dummyimage.com/632x1269.png/cc0000/ffffff'
+    'http://dummyimage.com/633x1322.png/dddddd/000000',
+    'http://dummyimage.com/1079x571.png/cc0000/ffffff',
+    'http://dummyimage.com/1027x988.png/ff4444/ffffff',
+    'http://dummyimage.com/848x1768.png/dddddd/000000',
+    'http://dummyimage.com/678x1795.png/5fa2dd/ffffff'
   ]
 }, {
   'id': 6,
-  'name': 'Sugar - Splenda Sweetener',
-  'type': 'quan',
+  'name': 'Wine - Red, Lurton Merlot De',
+  'type': 0,
   'size': [
-    28,
-    32,
     27,
-    27
+    32,
+    35,
+    35
   ],
-  'price': 92583,
-  'quantity': 157,
+  'price': 188506,
+  'quantity': 46,
   'images': [
-    'http://dummyimage.com/652x1331.png/cc0000/ffffff',
-    'http://dummyimage.com/940x665.png/cc0000/ffffff',
-    'http://dummyimage.com/1008x667.png/cc0000/ffffff',
-    'http://dummyimage.com/817x1342.png/cc0000/ffffff',
-    'http://dummyimage.com/1006x1136.png/ff4444/ffffff'
+    'http://dummyimage.com/582x1312.png/dddddd/000000',
+    'http://dummyimage.com/530x575.png/5fa2dd/ffffff',
+    'http://dummyimage.com/739x1828.png/5fa2dd/ffffff',
+    'http://dummyimage.com/915x1673.png/5fa2dd/ffffff',
+    'http://dummyimage.com/691x821.png/5fa2dd/ffffff'
   ]
 }, {
   'id': 7,
-  'name': 'Pork - Loin, Boneless',
-  'type': 'quan',
+  'name': 'Beef - Ox Tongue',
+  'type': 1,
   'size': [
     30,
-    32,
-    29,
+    31,
+    30,
     33
   ],
-  'price': 89755,
-  'quantity': 829,
+  'price': 662440,
+  'quantity': 15,
   'images': [
-    'http://dummyimage.com/764x754.png/ff4444/ffffff',
-    'http://dummyimage.com/1024x649.png/ff4444/ffffff',
-    'http://dummyimage.com/966x1217.png/dddddd/000000',
-    'http://dummyimage.com/937x518.png/ff4444/ffffff',
-    'http://dummyimage.com/958x1481.png/dddddd/000000'
+    'http://dummyimage.com/809x1080.png/cc0000/ffffff',
+    'http://dummyimage.com/593x1549.png/dddddd/000000',
+    'http://dummyimage.com/1045x1055.png/ff4444/ffffff',
+    'http://dummyimage.com/1000x512.png/5fa2dd/ffffff',
+    'http://dummyimage.com/887x1806.png/ff4444/ffffff'
   ]
 }, {
   'id': 8,
-  'name': 'Syrup - Monin - Passion Fruit',
-  'type': 'phukien',
+  'name': 'Madeira',
+  'type': 0,
   'size': [
+    31,
     33,
     35,
-    30,
-    29
+    27
   ],
-  'price': 37630,
-  'quantity': 458,
+  'price': 324466,
+  'quantity': 49,
   'images': [
-    'http://dummyimage.com/789x1376.png/ff4444/ffffff',
-    'http://dummyimage.com/789x1470.png/ff4444/ffffff',
-    'http://dummyimage.com/875x607.png/dddddd/000000',
-    'http://dummyimage.com/647x1581.png/cc0000/ffffff',
-    'http://dummyimage.com/786x1736.png/5fa2dd/ffffff'
+    'http://dummyimage.com/582x1213.png/ff4444/ffffff',
+    'http://dummyimage.com/817x795.png/ff4444/ffffff',
+    'http://dummyimage.com/540x771.png/cc0000/ffffff',
+    'http://dummyimage.com/566x1475.png/5fa2dd/ffffff',
+    'http://dummyimage.com/1072x1138.png/5fa2dd/ffffff'
   ]
 }, {
   'id': 9,
-  'name': 'Soup - Knorr, Chicken Gumbo',
-  'type': 'ao',
+  'name': 'Wine - Piper Heidsieck Brut',
+  'type': 1,
   'size': [
-    30,
+    28,
     31,
-    34,
-    35
+    27,
+    34
   ],
-  'price': 48205,
-  'quantity': 444,
+  'price': 639327,
+  'quantity': 43,
   'images': [
-    'http://dummyimage.com/618x1296.png/cc0000/ffffff',
-    'http://dummyimage.com/518x848.png/cc0000/ffffff',
-    'http://dummyimage.com/822x913.png/cc0000/ffffff',
-    'http://dummyimage.com/705x615.png/dddddd/000000',
-    'http://dummyimage.com/677x1167.png/ff4444/ffffff'
+    'http://dummyimage.com/626x757.png/ff4444/ffffff',
+    'http://dummyimage.com/783x602.png/ff4444/ffffff',
+    'http://dummyimage.com/918x1652.png/ff4444/ffffff',
+    'http://dummyimage.com/987x1737.png/cc0000/ffffff',
+    'http://dummyimage.com/565x1593.png/dddddd/000000'
   ]
 }, {
   'id': 10,
-  'name': 'Island Oasis - Mango Daiquiri',
-  'type': 'giay',
+  'name': 'Ice Cream - Fudge Bars',
+  'type': 0,
   'size': [
     31,
-    28,
-    31,
-    29
+    30,
+    30,
+    27
   ],
-  'price': 78140,
-  'quantity': 718,
+  'price': 914101,
+  'quantity': 44,
   'images': [
-    'http://dummyimage.com/887x1802.png/5fa2dd/ffffff',
-    'http://dummyimage.com/1012x1357.png/5fa2dd/ffffff',
-    'http://dummyimage.com/697x1886.png/ff4444/ffffff',
-    'http://dummyimage.com/766x1553.png/dddddd/000000',
-    'http://dummyimage.com/947x698.png/cc0000/ffffff'
+    'http://dummyimage.com/506x1783.png/dddddd/000000',
+    'http://dummyimage.com/655x558.png/5fa2dd/ffffff',
+    'http://dummyimage.com/979x1551.png/5fa2dd/ffffff',
+    'http://dummyimage.com/708x1758.png/ff4444/ffffff',
+    'http://dummyimage.com/978x601.png/dddddd/000000'
   ]
 }, {
   'id': 11,
-  'name': 'Iced Tea - Lemon, 340ml',
-  'type': 'giay',
+  'name': 'Chicken - Leg / Back Attach',
+  'type': 2,
   'size': [
-    29,
     32,
-    35,
-    28
+    29,
+    29,
+    31
   ],
-  'price': 60813,
-  'quantity': 357,
+  'price': 688539,
+  'quantity': 72,
   'images': [
-    'http://dummyimage.com/700x1145.png/5fa2dd/ffffff',
-    'http://dummyimage.com/796x1737.png/5fa2dd/ffffff',
-    'http://dummyimage.com/805x1212.png/ff4444/ffffff',
-    'http://dummyimage.com/945x1216.png/ff4444/ffffff',
-    'http://dummyimage.com/545x1040.png/cc0000/ffffff'
+    'http://dummyimage.com/647x1124.png/dddddd/000000',
+    'http://dummyimage.com/678x567.png/5fa2dd/ffffff',
+    'http://dummyimage.com/910x671.png/ff4444/ffffff',
+    'http://dummyimage.com/540x1282.png/5fa2dd/ffffff',
+    'http://dummyimage.com/1002x853.png/cc0000/ffffff'
   ]
 }, {
   'id': 12,
-  'name': 'Muffin Mix - Oatmeal',
-  'type': 'phukien',
+  'name': 'Sugar - Invert',
+  'type': 2,
   'size': [
-    28,
-    31,
-    31,
-    28
+    30,
+    30,
+    27,
+    30
   ],
-  'price': 86831,
-  'quantity': 944,
+  'price': 614817,
+  'quantity': 100,
   'images': [
-    'http://dummyimage.com/770x1389.png/cc0000/ffffff',
-    'http://dummyimage.com/1076x1837.png/5fa2dd/ffffff',
-    'http://dummyimage.com/565x837.png/ff4444/ffffff',
-    'http://dummyimage.com/578x1110.png/ff4444/ffffff',
-    'http://dummyimage.com/575x1839.png/cc0000/ffffff'
+    'http://dummyimage.com/891x1365.png/5fa2dd/ffffff',
+    'http://dummyimage.com/523x1703.png/5fa2dd/ffffff',
+    'http://dummyimage.com/697x1450.png/ff4444/ffffff',
+    'http://dummyimage.com/900x1824.png/ff4444/ffffff',
+    'http://dummyimage.com/712x884.png/ff4444/ffffff'
   ]
 }, {
   'id': 13,
-  'name': 'Flour - Whole Wheat',
-  'type': 'quan',
+  'name': 'Grapefruit - Pink',
+  'type': 2,
   'size': [
-    33,
-    30,
+    34,
+    32,
     30,
     31
   ],
-  'price': 80867,
-  'quantity': 121,
+  'price': 422769,
+  'quantity': 60,
   'images': [
-    'http://dummyimage.com/934x732.png/5fa2dd/ffffff',
-    'http://dummyimage.com/731x938.png/cc0000/ffffff',
-    'http://dummyimage.com/729x1519.png/5fa2dd/ffffff',
-    'http://dummyimage.com/636x593.png/dddddd/000000',
-    'http://dummyimage.com/615x1047.png/cc0000/ffffff'
+    'http://dummyimage.com/960x1003.png/5fa2dd/ffffff',
+    'http://dummyimage.com/858x1286.png/dddddd/000000',
+    'http://dummyimage.com/1066x661.png/dddddd/000000',
+    'http://dummyimage.com/573x692.png/dddddd/000000',
+    'http://dummyimage.com/657x1639.png/cc0000/ffffff'
   ]
 }, {
   'id': 14,
-  'name': 'Onions - Vidalia',
-  'type': 'quan',
+  'name': 'Juice - V8, Tomato',
+  'type': 3,
   'size': [
-    27,
-    34,
+    30,
+    28,
     31,
-    34
+    29
   ],
-  'price': 77985,
-  'quantity': 119,
+  'price': 496281,
+  'quantity': 22,
   'images': [
-    'http://dummyimage.com/879x916.png/cc0000/ffffff',
-    'http://dummyimage.com/644x819.png/ff4444/ffffff',
-    'http://dummyimage.com/1059x1271.png/cc0000/ffffff',
-    'http://dummyimage.com/1035x1358.png/dddddd/000000',
-    'http://dummyimage.com/529x760.png/cc0000/ffffff'
+    'http://dummyimage.com/732x1618.png/5fa2dd/ffffff',
+    'http://dummyimage.com/1024x1260.png/dddddd/000000',
+    'http://dummyimage.com/685x1770.png/dddddd/000000',
+    'http://dummyimage.com/607x533.png/5fa2dd/ffffff',
+    'http://dummyimage.com/553x1461.png/cc0000/ffffff'
   ]
 }, {
   'id': 15,
-  'name': 'Danishes - Mini Raspberry',
-  'type': 'phukien',
+  'name': 'The Pop Shoppe Pinapple',
+  'type': 2,
   'size': [
-    30,
-    35,
-    31,
-    32
+    28,
+    27,
+    34,
+    28
   ],
-  'price': 92533,
-  'quantity': 392,
+  'price': 508870,
+  'quantity': 76,
   'images': [
-    'http://dummyimage.com/733x786.png/dddddd/000000',
-    'http://dummyimage.com/605x1839.png/dddddd/000000',
-    'http://dummyimage.com/884x932.png/5fa2dd/ffffff',
-    'http://dummyimage.com/602x1907.png/cc0000/ffffff',
-    'http://dummyimage.com/917x1771.png/ff4444/ffffff'
+    'http://dummyimage.com/831x1842.png/5fa2dd/ffffff',
+    'http://dummyimage.com/664x756.png/dddddd/000000',
+    'http://dummyimage.com/1030x1232.png/5fa2dd/ffffff',
+    'http://dummyimage.com/778x1411.png/dddddd/000000',
+    'http://dummyimage.com/537x980.png/dddddd/000000'
   ]
 }, {
   'id': 16,
-  'name': 'Pate Pans Yellow',
-  'type': 'phukien',
+  'name': 'Huck Towels White',
+  'type': 3,
   'size': [
-    31,
-    30,
-    35,
-    29
+    32,
+    32,
+    32,
+    27
   ],
-  'price': 31719,
-  'quantity': 891,
+  'price': 603714,
+  'quantity': 31,
   'images': [
-    'http://dummyimage.com/510x1048.png/cc0000/ffffff',
-    'http://dummyimage.com/751x852.png/5fa2dd/ffffff',
-    'http://dummyimage.com/516x1394.png/cc0000/ffffff',
-    'http://dummyimage.com/755x1456.png/cc0000/ffffff',
-    'http://dummyimage.com/940x1024.png/5fa2dd/ffffff'
+    'http://dummyimage.com/888x829.png/cc0000/ffffff',
+    'http://dummyimage.com/1008x692.png/5fa2dd/ffffff',
+    'http://dummyimage.com/954x1112.png/dddddd/000000',
+    'http://dummyimage.com/841x519.png/ff4444/ffffff',
+    'http://dummyimage.com/706x1164.png/dddddd/000000'
   ]
 }, {
   'id': 17,
-  'name': 'Soup - Campbells, Butternut',
-  'type': 'giay',
+  'name': 'Towel - Roll White',
+  'type': 0,
   'size': [
-    33,
-    31,
-    33,
+    35,
+    27,
+    35,
     34
   ],
-  'price': 49482,
-  'quantity': 260,
+  'price': 876772,
+  'quantity': 100,
   'images': [
-    'http://dummyimage.com/778x1847.png/ff4444/ffffff',
-    'http://dummyimage.com/790x1595.png/5fa2dd/ffffff',
-    'http://dummyimage.com/786x1042.png/cc0000/ffffff',
-    'http://dummyimage.com/667x618.png/cc0000/ffffff',
-    'http://dummyimage.com/849x891.png/dddddd/000000'
+    'http://dummyimage.com/644x1617.png/ff4444/ffffff',
+    'http://dummyimage.com/961x976.png/dddddd/000000',
+    'http://dummyimage.com/735x1646.png/cc0000/ffffff',
+    'http://dummyimage.com/644x1355.png/cc0000/ffffff',
+    'http://dummyimage.com/778x1069.png/dddddd/000000'
   ]
 }, {
   'id': 18,
-  'name': 'Sausage - Andouille',
-  'type': 'giay',
+  'name': 'Pork - Sausage, Medium',
+  'type': 2,
   'size': [
     35,
-    33,
-    34,
-    34
+    31,
+    30,
+    35
   ],
-  'price': 38698,
-  'quantity': 902,
+  'price': 961025,
+  'quantity': 21,
   'images': [
-    'http://dummyimage.com/506x796.png/5fa2dd/ffffff',
-    'http://dummyimage.com/709x1619.png/dddddd/000000',
-    'http://dummyimage.com/878x1531.png/ff4444/ffffff',
-    'http://dummyimage.com/738x1120.png/dddddd/000000',
-    'http://dummyimage.com/549x794.png/dddddd/000000'
+    'http://dummyimage.com/672x1281.png/cc0000/ffffff',
+    'http://dummyimage.com/847x1276.png/ff4444/ffffff',
+    'http://dummyimage.com/961x1494.png/dddddd/000000',
+    'http://dummyimage.com/594x943.png/cc0000/ffffff',
+    'http://dummyimage.com/1029x517.png/dddddd/000000'
   ]
 }, {
   'id': 19,
-  'name': 'Apple - Macintosh',
-  'type': 'ao',
+  'name': 'Ecolab - Orange Frc, Cleaner',
+  'type': 3,
   'size': [
-    31,
+    27,
     30,
-    34,
+    27,
     30
   ],
-  'price': 50355,
-  'quantity': 190,
+  'price': 178088,
+  'quantity': 20,
   'images': [
-    'http://dummyimage.com/747x690.png/cc0000/ffffff',
-    'http://dummyimage.com/844x1325.png/ff4444/ffffff',
-    'http://dummyimage.com/1049x1868.png/ff4444/ffffff',
-    'http://dummyimage.com/974x1052.png/dddddd/000000',
-    'http://dummyimage.com/747x1388.png/ff4444/ffffff'
+    'http://dummyimage.com/895x1139.png/cc0000/ffffff',
+    'http://dummyimage.com/906x504.png/5fa2dd/ffffff',
+    'http://dummyimage.com/676x1875.png/dddddd/000000',
+    'http://dummyimage.com/567x1459.png/cc0000/ffffff',
+    'http://dummyimage.com/1049x1275.png/ff4444/ffffff'
   ]
 }, {
   'id': 20,
-  'name': 'Sprite, Diet - 355ml',
-  'type': 'ao',
+  'name': 'Bread - Hamburger Buns',
+  'type': 0,
   'size': [
-    33,
-    27,
-    27,
+    28,
+    35,
+    32,
     27
   ],
-  'price': 34840,
-  'quantity': 445,
+  'price': 863495,
+  'quantity': 47,
   'images': [
-    'http://dummyimage.com/947x835.png/ff4444/ffffff',
-    'http://dummyimage.com/1011x1022.png/ff4444/ffffff',
-    'http://dummyimage.com/899x866.png/ff4444/ffffff',
-    'http://dummyimage.com/927x853.png/cc0000/ffffff',
-    'http://dummyimage.com/869x1542.png/dddddd/000000'
+    'http://dummyimage.com/676x1242.png/ff4444/ffffff',
+    'http://dummyimage.com/646x885.png/5fa2dd/ffffff',
+    'http://dummyimage.com/1039x1109.png/dddddd/000000',
+    'http://dummyimage.com/975x954.png/5fa2dd/ffffff',
+    'http://dummyimage.com/545x1154.png/cc0000/ffffff'
   ]
 }]

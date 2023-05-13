@@ -1,4 +1,4 @@
-import {ReasonReport} from '../entities/DataType';
+import { ReasonReport } from '../entities/DataType';
 
 export const DEFAULT_USER_AVATAR = 'https://storage.googleapis.com/fjob-dev/default-avatar.png';
 export * from './colors';
