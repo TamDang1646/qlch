@@ -15,7 +15,11 @@ import {
   TabView,
 } from 'react-native-tab-view';
 
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+  faAdd,
+  faClose,
+  faSearch,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import { verticalScale } from '../../components/Scales';
@@ -168,21 +172,41 @@ const ProductScreen = (props: Props) => {
                 <FontAwesomeIcon icon={faHouse} size={verticalScale(50)} />
             </TouchableOpacity>
             <Text>ProductScreen</Text> */}
-      <View style={styles.inputWrapper}>
-        <FontAwesomeIcon icon={faSearch} size={verticalScale(18)} color={colors.grayColor} />
-        {/* <Ionicons name="ios-search" size={24} color="#C7C7CD" /> */}
-        <TextInput
-          placeholder="Search"
-          value={searchQuery}
-          onChangeText={setSearchQuery}
-          onSubmitEditing={handleSearch}
-          style={styles.input}
-        />
-        {searchQuery.length > 0 && (
-          <TouchableOpacity onPress={handleClear}>
-            {/* <Ionicons name="ios-close" size={24} color="#C7C7CD" /> */}
-          </TouchableOpacity>
-        )}
+      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+
+        <View style={styles.inputWrapper}>
+          <FontAwesomeIcon icon={faSearch} size={verticalScale(18)} color={colors.grayColor} />
+          {/* <Ionicons name="ios-search" size={24} color="#C7C7CD" /> */}
+          <TextInput
+            placeholder="Search"
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+            onSubmitEditing={handleSearch}
+            style={styles.input}
+          />
+          {searchQuery.length > 0 && (
+            <TouchableOpacity onPress={handleClear}>
+              <FontAwesomeIcon icon={faClose} size={20} />
+              {/* <Ionicons name="ios-close" size={24} color="#C7C7CD" /> */}
+            </TouchableOpacity>
+          )}
+        </View>
+        <TouchableOpacity onPress={() => {
+          NavigationService.navigate(routes.PRODUCT_EDIT, { item: {} })
+        }}
+          style={{
+            width: verticalScale(22),
+            height: verticalScale(22),
+            marginRight: verticalScale(16),
+            borderWidth: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 20,
+            borderColor: colors.grayColor
+          }}
+        >
+          <FontAwesomeIcon icon={faAdd} size={24} color={colors.grayColor} />
+        </TouchableOpacity>
       </View>
       <TabView
         navigationState={{ index, routes: tapRoutes }}
@@ -207,6 +231,7 @@ const styles = StyleSheet.create({
     margin: verticalScale(16)
   },
   inputWrapper: {
+    flex: 1,
     backgroundColor: '#FFFFFF',
     borderRadius: 20,
     paddingHorizontal: 10,

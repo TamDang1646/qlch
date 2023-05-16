@@ -9,6 +9,7 @@ MERGED from [com.facebook.flipper:flipper-network-plugin:0.125.0] C:\Users\ghost
 MERGED from [com.facebook.flipper:flipper-fresco-plugin:0.125.0] C:\Users\ghost\.gradle\caches\transforms-3\d583b133a68ceecad4ecdddb740e6639\transformed\jetified-flipper-fresco-plugin-0.125.0\AndroidManifest.xml:8:1-15:12
 MERGED from [com.facebook.flipper:flipper:0.125.0] C:\Users\ghost\.gradle\caches\transforms-3\236929aa564a4c4dfa1b417642a2a2ae\transformed\jetified-flipper-0.125.0\AndroidManifest.xml:8:1-18:12
 MERGED from [:react-native-async-storage_async-storage] E:\DATN\qlch\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
+MERGED from [:react-native-community_datetimepicker] E:\DATN\qlch\node_modules\@react-native-community\datetimepicker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-11:12
 MERGED from [:react-native-device-info] E:\DATN\qlch\node_modules\react-native-device-info\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-gesture-handler] E:\DATN\qlch\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-9:12
 MERGED from [:react-native-image-crop-picker] E:\DATN\qlch\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:2:1-33:12
@@ -125,6 +126,8 @@ application
 ADDED from E:\DATN\qlch\android\app\src\main\AndroidManifest.xml:5:5-24:19
 MERGED from E:\DATN\qlch\android\app\src\main\AndroidManifest.xml:5:5-24:19
 MERGED from E:\DATN\qlch\android\app\src\main\AndroidManifest.xml:5:5-24:19
+MERGED from [:react-native-community_datetimepicker] E:\DATN\qlch\node_modules\@react-native-community\datetimepicker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-20
+MERGED from [:react-native-community_datetimepicker] E:\DATN\qlch\node_modules\@react-native-community\datetimepicker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:9:5-20
 MERGED from [:react-native-image-crop-picker] E:\DATN\qlch\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:17:5-31:19
 MERGED from [:react-native-image-crop-picker] E:\DATN\qlch\node_modules\react-native-image-crop-picker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:17:5-31:19
 MERGED from [:rn-fetch-blob] E:\DATN\qlch\node_modules\rn-fetch-blob\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:33:5-43:19
@@ -219,6 +222,8 @@ MERGED from [com.facebook.flipper:flipper:0.125.0] C:\Users\ghost\.gradle\caches
 MERGED from [com.facebook.flipper:flipper:0.125.0] C:\Users\ghost\.gradle\caches\transforms-3\236929aa564a4c4dfa1b417642a2a2ae\transformed\jetified-flipper-0.125.0\AndroidManifest.xml:11:5-13:41
 MERGED from [:react-native-async-storage_async-storage] E:\DATN\qlch\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-async-storage_async-storage] E:\DATN\qlch\node_modules\@react-native-async-storage\async-storage\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-community_datetimepicker] E:\DATN\qlch\node_modules\@react-native-community\datetimepicker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
+MERGED from [:react-native-community_datetimepicker] E:\DATN\qlch\node_modules\@react-native-community\datetimepicker\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-device-info] E:\DATN\qlch\node_modules\react-native-device-info\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-device-info] E:\DATN\qlch\node_modules\react-native-device-info\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41
 MERGED from [:react-native-gesture-handler] E:\DATN\qlch\node_modules\react-native-gesture-handler\android\build\intermediates\merged_manifest\debug\AndroidManifest.xml:5:5-7:41

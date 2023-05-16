@@ -14,6 +14,7 @@ import {
     faClose,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 import BaseButton from '../../components/BaseButton';
 import DropdownListNew from '../../components/DropdownListNew';
@@ -33,22 +34,22 @@ interface Props {
 }
 const BillCreateEdit = (props: Props) => {
     const dropRef = React.createRef();
-    const { bill, type } = props.route.params;    
+    const { bill, type } = props.route.params;
     const [customerName, setCustomerName] = React.useState<string>('');
     const [customerPhoneNumber, setCustomerPhoneNumber] = React.useState<string>('');
     const [customerAddress, setCustomerAddress] = React.useState<string>('');
     const [totalPrice, setTotalPrice] = React.useState<number>(0);
     const [deposit, setDeposit] = React.useState<number>(0);
     const [itemsList, setItemsList] = React.useState<any>([]);
-    const [startDate, setStartDate] = React.useState('');
+    const [startDate, setStartDate] = React.useState(new Date().getTime());
     const [endDate, setEndDate] = React.useState('');
 
     React.useEffect(() => {
-        let totalP:number = itemsList?.reduce((total:number, item:any) => total + item.price*item.quantity,0);
+        let totalP: number = itemsList?.reduce((total: number, item: any) => total + item.price * item.quantity, 0);
         setTotalPrice(totalP - deposit)
-    }, [itemsList,deposit])
+    }, [itemsList, deposit])
     React.useEffect(() => {
-        if(type=='edit'&&bill){
+        if (type == 'edit' && bill) {
             setCustomerName(bill?.customer?.name)
             setCustomerPhoneNumber(bill?.customer?.phoneNumber)
             setCustomerAddress(bill?.customer?.address)
@@ -58,8 +59,8 @@ const BillCreateEdit = (props: Props) => {
             setDeposit(bill?.deposit)
         }
     }, [type])
-    
-    const deleteEr = async(index: number) => {
+
+    const deleteEr = async (index: number) => {
         await setItemsList(itemsList.filter((_: any, idx: number) => idx !== index))
     }
     const onChangeItems = (text: string, field: string, index: number) => {
@@ -68,14 +69,14 @@ const BillCreateEdit = (props: Props) => {
             [field]: text
         } : item))
     }
-    const onSelectItem = (index:number) => {
+    const onSelectItem = (index: number) => {
         setItemsList([...itemsList, {
-            id:products[index].id,
+            id: products[index].id,
             name: products[index].name,
             type: products[index].type,
             price: products[index].price,
             quantity: '',
-            size:''
+            size: ''
         }])
     }
     const onPressAddItem = () => {
@@ -87,15 +88,15 @@ const BillCreateEdit = (props: Props) => {
         })
     }
     const renderERCard = (item: {
-        id:number,
+        id: number,
         name: string,
         size: string,
         quantity: string,
         price: string,
-        type:string,
-    }, index: number) => {    
-        console.log('itemSte',item);
-        
+        type: string,
+    }, index: number) => {
+        console.log('itemSte', item);
+
         return (<View key={`item-${item.name}-${index}`} style={{
             //   width: verticalScale(343),
             borderWidth: 1,
@@ -113,17 +114,17 @@ const BillCreateEdit = (props: Props) => {
                 {/* <Icon name="No" size={verticalScale(14)} color={colors.borderColor} /> */}
             </TouchableOpacity>
             <View style={[styles.erCard]}>
-                <TextBase title={'Tên hàng: '} style={[styles.text,{flex:0}]}/>
+                <TextBase title={'Tên hàng: '} style={[styles.text, { flex: 0 }]} />
                 <TextInput
                     autoCorrect={false}
                     placeholderTextColor={colors.grayColor}
                     value={`${item.name}`}
-                    editable={false}    
+                    editable={false}
                     placeholder={'Chọn đồ'}
                     style={styles.text} />
             </View>
             <View style={[styles.erCard]}>
-            <TextBase title={'Size: '} style={[styles.text,{flex:0}]}/>
+                <TextBase title={'Size: '} style={[styles.text, { flex: 0 }]} />
 
                 <TextInput
                     autoCorrect={false}
@@ -134,7 +135,7 @@ const BillCreateEdit = (props: Props) => {
                     style={styles.text} />
             </View>
             <View style={[styles.erCard, { borderColor: styles.erCard.borderColor }]}>
-            <TextBase title={'Số lượng: '} style={[styles.text,{flex:0}]}/>
+                <TextBase title={'Số lượng: '} style={[styles.text, { flex: 0 }]} />
 
                 <TextInput
                     autoCorrect={false}
@@ -146,9 +147,9 @@ const BillCreateEdit = (props: Props) => {
                     style={styles.text} />
             </View>
             <View style={[styles.erCard, { borderColor: styles.erCard.borderColor }]}>
-            <TextBase title={'Giá: '} style={[styles.text,{flex:0}]}/>
+                <TextBase title={'Giá: '} style={[styles.text, { flex: 0 }]} />
 
-            <TextInput
+                <TextInput
                     autoCorrect={false}
                     placeholderTextColor={colors.grayColor}
                     value={`${getMoneyFormat(item.price)} VND/cái`}
@@ -161,14 +162,40 @@ const BillCreateEdit = (props: Props) => {
     }
     const onSelectTime = (index: number) => {
         switch (index) {
-          case 0:
-            break;
-          case 1:
-            break;
-          default:
-            break;
+            case 0:
+                setStartDay()
+                break;
+            case 1:
+                setEndDay()
+                break;
+            default:
+                break;
         }
-      }
+    }
+    //TODO date picker
+    console.log('startDate', startDate);
+
+    const setStartDay = () => {
+        DateTimePickerAndroid.open({
+            value: new Date(startDate),
+            onChange: (_, selectedDate) => {
+                setStartDate(selectedDate?.getTime())
+            },
+            mode: 'date',
+            is24Hour: true,
+        });
+    };
+    const setEndDay = () => {
+        DateTimePickerAndroid.open({
+            value: new Date(startDate),
+            onChange: (_, selectedDate) => {
+                setEndDate(selectedDate?.getTime())
+            },
+            mode: 'date',
+            is24Hour: true,
+        });
+    };
+    //TODO
     const renderForm = () => {
         return (<View style={{ flex: 1, margin: verticalScale(16) }}>
             {/* <View style={styles.customerInfo}> */}
@@ -212,34 +239,34 @@ const BillCreateEdit = (props: Props) => {
             {/** */}
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignSelf: 'center', marginTop: verticalScale(20), marginBottom: verticalScale(16) }}>
                 <TouchableOpacity
-                  style={{ ...styles.timePicker, marginLeft: 0 }}
-                  onPress={() => onSelectTime(0)}
+                    style={{ ...styles.timePicker, marginLeft: 0 }}
+                    onPress={() => onSelectTime(0)}
                 >
-                
+
                     <TextBase title={'Thuê từ ngày'} style={{ position: 'absolute', top: -15, left: 7, flexDirection: 'row' }} />
 
-                  {startDate?.length > 0
-                    ? <TextBase title={converTimeStamp(startDate)} style={styles.time} />
-                    : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
-                  }
+                    {startDate
+                        ? <TextBase title={converTimeStamp(startDate)} style={styles.time} />
+                        : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
+                    }
                 </TouchableOpacity>
                 <TouchableOpacity
-                  style={{ ...styles.timePicker, marginRight: 0 }}
-                  onPress={() => onSelectTime(1)}
+                    style={{ ...styles.timePicker, marginRight: 0 }}
+                    onPress={() => onSelectTime(1)}
                 >
                     <TextBase title={'Đến ngày'} style={{ position: 'absolute', top: -15, left: 7, flexDirection: 'row' }} />
-                  {endDate && endDate?.length > 0
-                    ? <TextBase title={converTimeStamp(endDate)} style={styles.time} />
-                    : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
-                  }
+                    {endDate
+                        ? <TextBase title={converTimeStamp(endDate)} style={styles.time} />
+                        : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
+                    }
                 </TouchableOpacity>
-              </View>
-                {/** */}
-                <TextBase title={'Đã thanh toán'} style={{
-                    fontSize: verticalScale(18),
-                    marginBottom: verticalScale(10)
-                }} />
-                <TextInput
+            </View>
+            {/** */}
+            <TextBase title={'Đã thanh toán'} style={{
+                fontSize: verticalScale(18),
+                marginBottom: verticalScale(10)
+            }} />
+            <TextInput
                 style={styles.inputStyle}
                 onChangeText={text => setDeposit(parseFloat(text))}
                 value={`${getMoneyFormat(deposit.toString())} VND`}
@@ -247,21 +274,21 @@ const BillCreateEdit = (props: Props) => {
                 placeholderTextColor={colors.grayColor}
             />
             <TextBase title={'Tổng hoá đơn:   '} style={{
-                    fontSize: verticalScale(18),
-                    marginBottom: verticalScale(10)
-                }} >
-                    <TextBase title={`${getMoneyFormat(totalPrice.toString())} VND`} style={{
+                fontSize: verticalScale(18),
+                marginBottom: verticalScale(10)
+            }} >
+                <TextBase title={`${getMoneyFormat(totalPrice.toString())} VND`} style={{
                     fontSize: verticalScale(18),
                     marginBottom: verticalScale(10)
                 }} />
-                </TextBase>
+            </TextBase>
         </View>)
     }
-    const onNextPress=()=>{
+    const onNextPress = () => {
         console.log('data', {
             customer: {
                 name: customerName,
-                phoneNumber:customerPhoneNumber,
+                phoneNumber: customerPhoneNumber,
                 address: customerAddress
             },
             items: itemsList,
@@ -270,7 +297,7 @@ const BillCreateEdit = (props: Props) => {
             endDate,
             deposit
         });
-        
+
     }
     return (
         <SafeAreaView style={styles.container}>
@@ -280,14 +307,14 @@ const BillCreateEdit = (props: Props) => {
                 {renderForm()}
             </ScrollView>
 
-            <BaseButton title={type == 'edit' ? 'Cập nhật' : 'Tạo mới'}  style={{
+            <BaseButton title={type == 'edit' ? 'Cập nhật' : 'Tạo mới'} style={{
                 width: verticalScale(150),
-                alignSelf:'center',
+                alignSelf: 'center',
                 alignItems: 'center',
-                justifyContent:'center',
-                marginVertical:verticalScale(10)
+                justifyContent: 'center',
+                marginVertical: verticalScale(10)
             }}
-            onPress={onNextPress}
+                onPress={onNextPress}
             />
         </SafeAreaView>
     );
@@ -318,7 +345,7 @@ const styles = StyleSheet.create({
         fontSize: verticalScale(15),
         fontFamily: 'Pattaya-Regular',
         fontWeight: '500',
-        color:colors.inputColor
+        color: colors.inputColor
     },
     erCard: {
         marginHorizontal: verticalScale(12),
@@ -338,7 +365,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Pattaya-Regular',
         fontWeight: '500',
         flex: 1,
-        color:colors.inputColor
+        color: colors.inputColor
     },
     categoriesView: {
         backgroundColor: 'white',
@@ -362,8 +389,8 @@ const styles = StyleSheet.create({
         marginBottom: verticalScale(8),
         marginTop: verticalScale(6),
     },
-    row:{
-        flexDirection:'row'
+    row: {
+        flexDirection: 'row'
     },
     timePicker: {
         flex: 1,
@@ -373,13 +400,13 @@ const styles = StyleSheet.create({
         marginLeft: 0,
         borderRadius: verticalScale(8),
         borderColor: colors.inputBorderColor,
-        backgroundColor:'white'
-      },
-      time: {
+        backgroundColor: 'white'
+    },
+    time: {
         margin: verticalScale(16),
         marginHorizontal: verticalScale(24)
     },
     datePickerStyle: {
         width: 230,
-      },
+    },
 })
