@@ -1,34 +1,29 @@
 import Configuration from '../config/Configuration';
 import ApiHelper from '../helper/ApiHelper';
 
-class PostServices extends ApiHelper {
+class ProductServices extends ApiHelper {
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  searchPost = async (params: any) => {
-    let userId = await this.getUserId()
-    let code = await this.getUserCode()
-    const data = { ...params, userId, code }
-    const response = await this.callApi(Configuration.API_URL + '/post', data, 'GET', 'application/json', false)
+  searchProduct = async (params: any) => {
+    const data = { ...params }
+    const response = await this.callApi(Configuration.API_URL + '/product', data, 'GET', 'application/json', false)
     let errorMsg = response?.message,
       errorCode = response?.errorCode;
-    return { errorCode, errorMsg, posteds: response.data };
+    return { errorCode, errorMsg, products: response };
   }
 
-  savePost = async (postId: number) => {
+  saveProduct = async (ProductId: number) => {
     let userId = await this.getUserId()
     let code = await this.getUserCode()
-    const data = { postId, userId, code }
+    const data = { ProductId, userId, code }
 
-    const response = await this.callApi(Configuration.API_URL + '/save', data, 'POST', 'application/json', false)
+    const response = await this.callApi(Configuration.API_URL + '/save', data, 'product', 'application/json', false)
     let errorMsg = response?.message,
       errorCode = response?.errorCode;
     return { errorCode, errorMsg, save: response };
   }
 
-  deletePost = async (postId: number) => {
-    let userId = await this.getUserId()
-    let code = await this.getUserCode()
-    const data = { postId, userId, code }
-    const response = await this.callApi(Configuration.API_URL + '/save' + `/${postId}/${userId}`, {}, 'DELETE', 'application/json', false)
+  deleteProduct = async (productId: number) => {
+    const response = await this.callApi(Configuration.API_URL + '/product' + `/${productId}`, {}, 'DELETE', 'application/json', false)
     let errorMsg = response?.message,
       errorCode = response?.errorCode;
     return { errorCode, errorMsg, save: response };
@@ -37,15 +32,15 @@ class PostServices extends ApiHelper {
 
   getUserSave = async () => {
     let userId = await this.getUserId()
-    const response = await this.callApi(Configuration.API_URL + '/post/save-post/' + `${userId}`, {}, 'GET', 'application/json', false)
+    const response = await this.callApi(Configuration.API_URL + '/product/save-product/' + `${userId}`, {}, 'GET', 'application/json', false)
     let errorMsg = response?.message,
       errorCode = response?.errorCode;
     return { errorCode, errorMsg, save: response.data };
   }
 
-  createPost = async (param: any) => {
+  createProduct = async (param: any) => {
 
-    const response = await this.callApi(Configuration.API_URL + '/post', param, 'POST', 'application/json', false)
+    const response = await this.callApi(Configuration.API_URL + '/product', param, 'POST', 'application/json', false)
     let errorMsg = response?.message,
       errorCode = response?.errorCode;
     return { errorCode, errorMsg, save: response };
@@ -59,18 +54,18 @@ class PostServices extends ApiHelper {
   }
 
   createReport = async (params: any) => {
-    const response = await this.callApi(Configuration.API_URL + '/report', params, 'POST', 'application/json', false)
+    const response = await this.callApi(Configuration.API_URL + '/report', params, 'Product', 'application/json', false)
     let errorMsg = response?.message,
       errorCode = response?.errorCode;
     return { errorCode, errorMsg, report: response };
   }
 
-  updatePost = async (id: number, params: any) => {
-    const response = await this.callApi(Configuration.API_URL + '/post/' + id, params, 'PATCH', 'application/json', false)
+  updateProduct = async (id: number, params: any) => {
+    const response = await this.callApi(Configuration.API_URL + '/product/' + id, params, 'PATCH', 'application/json', false)
     let errorMsg = response?.message,
       errorCode = response?.errorCode;
     return { errorCode, errorMsg, report: response };
   }
 }
-const postServices = new PostServices()
-export default postServices;
+const productServices = new ProductServices()
+export default productServices;

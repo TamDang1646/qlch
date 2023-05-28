@@ -1,12 +1,17 @@
 import React from 'react';
 
 import {
+    Alert,
     Image,
     SafeAreaView,
     ScrollView,
     TouchableOpacity,
     View,
 } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
+
+import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import CarouselImage from '../../components/CarouselImage';
 import HeaderView from '../../components/HeaderView';
@@ -15,16 +20,18 @@ import TextBase from '../../components/TextBase';
 import { images } from '../../constants/images';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
+import productServices from '../../services/ProductServices';
 import { getMoneyFormat } from '../../utils/Utils';
 
 interface Props {
     route: any
 }
 const ProductDetailScreen = (props: Props) => {
+    console.log(props);
     const { item } = props.route.params;
     console.log(item);
     const renderItem = ({ item, index }: any) => {
-        return <TouchableOpacity
+        return item && <TouchableOpacity
             onPress={() => {
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
                 // setImageIndex(index);
@@ -37,9 +44,52 @@ const ProductDetailScreen = (props: Props) => {
     const onPressEdit = () => {
         NavigationService.navigate(routes.PRODUCT_EDIT, { item })
     }
+    const deleteProduct = async () => {
+        const res = productServices.deleteProduct(item?.id)
+        if (!(await res).errorCode) {
+            showMessage({
+                message: 'Delete succes!',
+                type: 'success',
+                icon: 'success',
+                autoHide: true
+            })
+            NavigationService.back()
+        } else {
+            showMessage({
+                message: (await res).errorMsg,
+                type: 'danger',
+                icon: 'danger',
+                autoHide: true
+            })
+            NavigationService.back()
+        }
+    }
+    const onDelete = () => {
+        Alert.alert(
+            'Xóa sản phẩm',
+            'Bạn có chắc chắn xóa sản phầm này?',
+            [
+                {
+                    text: 'Huỷ',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel'
+                },
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                { text: 'Đồng ý', onPress: deleteProduct }
+            ]
+        );
+    }
+    const renderSave = () => {
+        return <TouchableOpacity style={{ width: 30, height: 30, alignItems: 'center', justifyContent: 'center' }}
+            onPress={onDelete}
+        >
+            <FontAwesomeIcon icon={faTrashCan} size={20} color='black' />
+        </TouchableOpacity>
+
+    }
     return (
         <SafeAreaView style={{ flex: 1 }}>
-            <HeaderView title='Sản phẩm' />
+            <HeaderView title='Sản phẩm' renderRight={() => renderSave()} />
             <ScrollView style={{ flex: 1, margin: verticalScale(16) }}>
                 <TextBase title={item.name} style={{
                     fontSize: verticalScale(16),
@@ -48,8 +98,8 @@ const ProductDetailScreen = (props: Props) => {
                     // flex:1
                 }} />
                 <View style={{ marginVertical: verticalScale(16) }}>
-                    {item?.images && item?.images?.length > 0 ?
-                        <CarouselImage data={item?.images} renderItem={renderItem} viewCount={item?.images?.length} />
+                    {item?.image && item?.image?.length > 0 ?
+                        <CarouselImage data={item?.image.split(',')} renderItem={renderItem} viewCount={item?.image?.length} />
                         : <Image
                             source={images.defaultImage}
                             style={{
@@ -61,7 +111,7 @@ const ProductDetailScreen = (props: Props) => {
                         />
                     }
                 </View>
-                <TextBase title={`Size: ${item.size.join(', ')}`} style={{
+                <TextBase title={`Size: ${item.size}`} style={{
                     fontSize: verticalScale(16),
                     marginBottom: verticalScale(10)
                     // flex:1

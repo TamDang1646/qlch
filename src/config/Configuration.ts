@@ -1,5 +1,6 @@
 export default class Configuration {
-    static API_URL = 'https://motel-api-production-f410.up.railway.app';
+    static API_URL = 'http://192.168.1.7:3000';
+    // static API_URL = 'https://motel-api-production-f410.up.railway.app';
     // static API_URL = 'https://motel-api-production.up.railway.app';
     static UPLOAD_URL = '';
     static DEV_MODE = true;

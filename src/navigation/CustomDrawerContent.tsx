@@ -20,12 +20,16 @@ import {
 import { verticalScale } from '../components/Scales';
 import TextBase from '../components/TextBase';
 import { images } from '../constants/images';
-import { useAppDispatch } from '../stores';
+import {
+    useAppDispatch,
+    useAppSelector,
+} from '../stores';
 import * as AuthActions from '../stores/Auth/Actions';
 import NavigationService from './NavigationService';
 import { routes } from './Routes';
 
 const CustomSidebarMenu = () => {
+    const state = useAppSelector(state => state)
     const dispatch = useAppDispatch();
     return (
         <SafeAreaView style={styles.container}>
@@ -40,9 +44,9 @@ const CustomSidebarMenu = () => {
                         source={images.img_default_avatar}
                         style={styles.sideMenuProfileIcon}
                     />
-                    <Text style={styles.userText}>Admin</Text>
+                    <Text style={styles.userText}>{state.auth.user?.role == 0 ? 'admin' : 'staff'}</Text>
                 </View>
-                <TextBase style={styles.userName}>Nguyen Van A</TextBase>
+                <TextBase style={styles.userName}>{state.auth.user?.phoneNumber}</TextBase>
             </LinearGradient>
             {/* </View> */}
             <DrawerContentScrollView style={{
@@ -68,7 +72,7 @@ const CustomSidebarMenu = () => {
                 />
                 <DrawerItem
                     label="Customers"
-                    onPress={() => { NavigationService.navigate(routes.CUSTOMER_SCREEN)}}
+                    onPress={() => { NavigationService.navigate(routes.CUSTOMER_SCREEN) }}
                     style={styles.dashboard}
                     labelStyle={styles.lableStyle}
                 />

@@ -1,4 +1,5 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+import React, { useState } from 'react';
 
 import {
     FlatList,
@@ -11,6 +12,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 import SelectDropdown from 'react-native-select-dropdown';
 
 import BaseUploadImage from '../../components/BaseUploadImage';
@@ -20,46 +22,85 @@ import R from '../../components/R';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { colors } from '../../constants';
+import NavigationService from '../../navigation/NavigationService';
+import productServices from '../../services/ProductServices';
 
 interface Props {
     route: any
 }
 const ProductEditScreen = (props: Props) => {
     const { item } = props.route.params;
-    const [images, setImages] = React.useState<any>([]);
-    const [imagesLocal, setImagesLocal] = React.useState<any>([]);
-    const [name, setName] = React.useState('')
-    const [size, setSize] = React.useState('')
-    const [type, setType] = React.useState('')
-    const [price, setPrice] = React.useState('')
-    const [quantity, setQuantity] = React.useState('')
+    const [images, setImages] = useState<any>([]);
+    const [imagesLocal, setImagesLocal] = useState<any>([]);
+    const [name, setName] = React.useState()
+    const [size, setSize] = React.useState()
+    const [type, setType] = React.useState()
+    const [price, setPrice] = React.useState()
+    const [quantity, setQuantity] = React.useState()
     const types = ['Quần', 'Áo', 'Giày', 'Phụ kiện']
     const [visibleReport, setVisibleReport] = React.useState<boolean>(false);
-    const [currentImage, setCurrentImage] = React.useState<string>('');
+    const [currentImage, setCurrentImage] = React.useState<string>();
     React.useEffect(() => {
         if (item?.id) {
             setName(item.name)
-            setSize(item.size.join(','))
+            setSize(item.size)
             setType(item.type)
             setPrice(item.price.toString())
             setQuantity(item.quantity.toString())
-            setImages(item.images)
-            setImagesLocal(item.images)
+            setImages(item.image.split(','))
+            setImagesLocal(item.image.split(','))
         }
     }, [item])
 
     console.log(item, images);
-    const onPressEdit = () => {
-        console.log({
-            name, size, type, price, quantity
-        });
+    const onPressEdit = async () => {
+        const data = {
+            name, size, type, price, quantity, image: images.toString()
+        }
+        console.log(data);
+        if (item?.id) {
+            const res = await productServices.updateProduct(item.id, data)
+            if (!res.errorCode) {
+                showMessage({
+                    message: 'Upload succes!',
+                    type: 'success',
+                    icon: 'success',
+                    autoHide: true
+                })
+            } else {
+                showMessage({
+                    message: res.errorMsg,
+                    type: 'danger',
+                    icon: 'danger',
+                    autoHide: true
+                })
+            }
+        } else {
+            const res = await productServices.createProduct(data)
+            if (!res.errorCode) {
+                showMessage({
+                    message: 'Upload succes!',
+                    type: 'success',
+                    icon: 'success',
+                    autoHide: true
+                })
+                NavigationService.back()
+            } else {
+                showMessage({
+                    message: res.errorMsg,
+                    type: 'danger',
+                    icon: 'danger',
+                    autoHide: true
+                })
+            }
+        }
     }
     const modalOptionImgAvatar = React.createRef()
     const tapImage = (url: string) => {
         setCurrentImage(url);
         setVisibleReport(true)
     }
-    // console.log('imageState', images, imagesLocal);
+    console.log('imageState', images, imagesLocal);
 
     const deleteImage = (i: number) => {
         // console.log('image',images.filter(item=> (images.indexOf(item))!=index),imagesLocal.filter(item=> (imagesLocal.indexOf(item))!=index));
@@ -155,7 +196,7 @@ const ProductEditScreen = (props: Props) => {
                 }} />
                 <TextInput
                     style={styles.inputStyle}
-                    onChangeText={text => setSize(text.split(','))}
+                    onChangeText={text => setSize(text)}
                     value={size}
                     placeholder='Nhập size: Ví dụ 27,28,29,..'
                     placeholderTextColor={colors.grayColor}
@@ -213,14 +254,14 @@ const ProductEditScreen = (props: Props) => {
                                 <FlatList
                                     data={imagesLocal}
                                     style={{ marginVertical: verticalScale(8) }}
-                                    renderItem={({ item, index }) => (
+                                    renderItem={({ item, index }) => item && (
                                         <View style={{
                                             flex: 1 / 3,
                                             flexDirection: 'column',
                                             marginBottom: verticalScale(8),
-                                            paddingTop: verticalScale(10),
+                                            paddingTop: verticalScale(10)
                                             // borderWidth:1
-                                            marginHorizontal: verticalScale(4),
+                                            // marginRight: verticalScale(8),
                                         }}>
                                             <TouchableOpacity
                                                 style={{
@@ -285,6 +326,25 @@ const ProductEditScreen = (props: Props) => {
                                     keyExtractor={(item, index) => index}
                                 />
                         }
+                        {/* {images?< FlatList
+                            data={images}
+                            style={{ marginVertical: verticalScale(8) }}
+                                renderItem={({ item }) => (
+                                <View style={{
+                                    flex: 1/3,
+                                    flexDirection: 'column',
+                                    marginBottom: verticalScale(8),
+                                    // marginRight: verticalScale(8),
+                                }}>
+                                    <Image style={styles.imageThumbnail} source={{uri:item}} />
+                                </View>
+                            )}
+                            //Setting the number of column
+                            numColumns={3}
+                            keyExtractor={(item, index) => index}
+                        />:null
+                    } */}
+
                     </View>
                 </View>
             </ScrollView>
@@ -299,9 +359,10 @@ const ProductEditScreen = (props: Props) => {
                 alignSelf: 'center',
                 margin: verticalScale(8)
             }}
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onPress={onPressEdit}
             >
-                <TextBase title={'Cập nhật'} />
+                <TextBase title={item?.id ? 'Cập nhật' : 'Thêm mới'} />
             </TouchableOpacity>
             <BaseUploadImage
                 ref={modalOptionImgAvatar}

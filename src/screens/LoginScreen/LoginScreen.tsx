@@ -8,6 +8,7 @@ import {
     TouchableWithoutFeedback,
     View,
 } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 
 import {
     faEye,
@@ -17,9 +18,11 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import BaseButton from '../../components/BaseButton';
+import R from '../../components/R';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import TextInputBase from '../../components/TextInputBase';
+import authServices from '../../services/AuthServices';
 import { useAppDispatch } from '../../stores';
 import * as AuthActions from '../../stores/Auth/Actions';
 
@@ -43,28 +46,26 @@ const LoginScreen = () => {
     }
 
     const loginPress = async () => {
-        // R.Loading.show();
-        // const loginRes = await authServices.login(sdt, password);
-        // if (sdt == '0123456789' && password == '123456789') {
-        //     dispatch(AuthActions.loginCompleted(loginRes.userInfo))
-        //     return
-        // }
+        R.Loading.show();
+        const loginRes = await authServices.login(sdt, password);
+        if (sdt == '0123456789' && password == '123456789') {
+            dispatch(AuthActions.loginCompleted(loginRes.userInfo))
+            return
+        }
 
-        // if (loginRes.errorCode) {
-        //     dispatch(AuthActions.loginError({ errorCode: loginRes.errorCode, errorMsg: loginRes.errorMsg }))
-        //     R.Loading.hide();
-        //     showMessage({
-        //         message: loginRes.errorMsg,
-        //         type: 'danger',
-        //         icon: 'danger',
-        //         autoHide: true
-        //     })
-        // } else {
-        //     dispatch(AuthActions.loginCompleted(loginRes.userInfo))
-        //     R.Loading.hide();
-        // }
-        dispatch(AuthActions.loginCompleted({}))
-
+        if (loginRes.errorCode) {
+            dispatch(AuthActions.loginError({ errorCode: loginRes.errorCode, errorMsg: loginRes.errorMsg }))
+            R.Loading.hide();
+            showMessage({
+                message: loginRes.errorMsg,
+                type: 'danger',
+                icon: 'danger',
+                autoHide: true
+            })
+        } else {
+            dispatch(AuthActions.loginCompleted(loginRes.userInfo))
+            R.Loading.hide();
+        }
     }
 
     return (

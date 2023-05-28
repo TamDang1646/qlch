@@ -18,7 +18,7 @@ import { PostStatus } from '../constants';
 import { images } from '../constants/images';
 import { Author } from '../entities/Author';
 import { Posts } from '../entities/Post';
-import postServices from '../services/PostServices';
+import postServices from '../services/ProductServices';
 import { useAppSelector } from '../stores';
 import {
     getMoneyFormat,

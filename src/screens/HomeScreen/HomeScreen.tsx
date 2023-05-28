@@ -29,6 +29,7 @@ import { images } from '../../constants/images';
 import { bills } from '../../mockData/bills';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
+import { useAppSelector } from '../../stores';
 import { converTimeStamp } from '../../utils/Utils';
 
 interface Props {
@@ -38,6 +39,7 @@ const HomeScreen = (props: Props) => {
     const { navigation } = props;
     const isDrawerOpen = useDrawerStatus() === 'open';
     // const [isRefresh,setIsRefresh] = React.useState(false);
+    const state = useAppSelector(state => state)
     const onPressMenu = () => {
         if (isDrawerOpen) {
             navigation.closeDrawer();
@@ -84,153 +86,11 @@ const HomeScreen = (props: Props) => {
             </View>
         </>
     }
-    // const renderBillModal = () => {
-    //     return (
-    //         <View key={`index-${currentItem.id}`} style={{
-    //             alignSelf: 'center',
-    //             padding: verticalScale(16),
-    //             width: verticalScale(343),
-
-    //         }}>
-    //             <View style={{
-    //                 alignSelf: 'center',
-    //                 padding: verticalScale(16),
-    //                 width: '100%',
-    //             }}>
-    //                 <TouchableOpacity style={{
-    //                     position: 'absolute',
-    //                     top: 10,
-    //                     right: 10
-    //                 }}
-    //                     onPress={() => onClose?.()}
-    //                 >
-    //                     <FontAwesomeIcon icon={faClose} size={30} />
-    //                 </TouchableOpacity>
-    //                 <View style={{
-    //                     alignItems: 'center',
-    //                     justifyContent: 'center',
-    //                     marginVertical: verticalScale(20)
-    //                 }}>
-    //                     <Image source={images.img_logo} style={{
-    //                         width: verticalScale(50),
-    //                         height: verticalScale(50),
-    //                         overflow: 'hidden',
-    //                         borderRadius: verticalScale(50) / 2
-    //                     }} resizeMode='stretch' />
-    //                     <TextBase title={'Q-Fashion'} />
-    //                     <TextBase title={`${convertFullTimeStamp(currentItem?.createAt)}`} style={{
-    //                         fontSize: verticalScale(14),
-    //                         color: '#A8A8A8'
-    //                     }} />
-    //                 </View>
-    //                 <View style={{
-    //                     paddingVertical: verticalScale(8),
-    //                     borderTopWidth: 1,
-    //                     borderBottomWidth: 1,
-    //                     borderStyle: 'dashed'
-    //                 }}>
-    //                     <TextBase title={'Khách hàng:  '} style={styles.customerInfo}>
-    //                         <TextBase title={currentItem?.customer?.name} style={styles.customerInfo_text} />
-    //                     </TextBase>
-    //                     <TextBase title={'SĐT:  '} style={styles.customerInfo}>
-    //                         <TextBase title={currentItem?.customer?.phoneNumber} style={styles.customerInfo_text} />
-    //                     </TextBase>
-    //                     <TextBase title={'Địa chỉ:  '} style={styles.customerInfo}>
-    //                         <TextBase title={currentItem?.customer?.address} style={styles.customerInfo_text} />
-    //                     </TextBase>
-    //                     <TextBase title={'Thời gian thuê:  '} style={styles.customerInfo}>
-    //                         <TextBase title={converTimeStamp(currentItem?.startDate)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
-    //                         <TextBase title={' - '} />
-    //                         <TextBase title={converTimeStamp(currentItem?.endDate)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
-    //                     </TextBase>
-
-    //                 </View>
-    //                 <View style={{
-    //                     marginTop: verticalScale(10),
-    //                 }}>
-    //                     <View style={{ flexDirection: 'row', width: '100%', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-    //                         <TextBase title={'Tổng hoá đơn:'} />
-    //                         <TextBase title={`${currentItem?.totalPrice} đ`} />
-    //                     </View>
-    //                     <View style={{ padding: verticalScale(4), borderWidth: 1, borderStyle: 'dashed', borderColor: '#D7D3D3' }}>
-    //                         <ScrollView style={{ width: '100%', height: verticalScale(100) }}>
-    //                             {currentItem.items?.map((i: any) => {
-    //                                 return (
-    //                                     <View style={{ flexDirection: 'row', width: '100%', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-    //                                         <TextBase title={i.name} style={{ flex: 3, color: '#827878' }} numberOfLines={1} ellipsizeMode='tail' />
-    //                                         <TextBase title={`x${i.total}`} style={{ flex: 0.5, color: '#827878' }} />
-    //                                         <TextBase title={getMoneyFormat(i.price) + ' đ'} style={{ flex: 1.5, color: '#827878', textAlign: 'right' }} />
-    //                                     </View>
-    //                                 )
-    //                             })}
-    //                         </ScrollView>
-    //                     </View>
-    //                     <View style={{ marginTop: verticalScale(8) }}>
-    //                         <TextBase title={'Tiền cọc:  '} style={styles.customerInfo}>
-    //                             <TextBase title={currentItem.deposit ? getMoneyFormat(currentItem.deposit) + ' đ' : '0 đ'} style={styles.customerInfo_text} />
-    //                         </TextBase>
-    //                         <TextBase title={'Còn lại:  '} style={styles.customerInfo}>
-    //                             <TextBase title={currentItem.deposit ? getMoneyFormat(parseFloat(currentItem.totalPrice) - parseFloat(currentItem.deposit)) + ' đ' : getMoneyFormat(currentItem.totalPrice) + ' đ'} style={styles.customerInfo_text} />
-    //                         </TextBase>
-    //                     </View>
-    //                 </View>
-    //                 <TouchableOpacity style={{
-    //                     width: verticalScale(150),
-    //                     height: verticalScale(50),
-    //                     alignItems: 'center',
-    //                     justifyContent: 'center',
-    //                     borderRadius: 20,
-    //                     backgroundColor: '#A2FDA0',
-    //                     alignSelf: 'center',
-    //                     margin: verticalScale(8)
-    //                 }}
-    //                     onPress={onPressEdit}
-    //                 >
-    //                     <TextBase title={'Chỉnh sửa'} />
-    //                 </TouchableOpacity>
-    //             </View>
-    //         </View>
-
-    //     )
-    // }
-    // const onClose = () => {
-    //     console.log('close');
-    //     // setVisible(false)
-    // }
-    // const onPressEdit = (item: any) => {
-    //     onClose?.()
-    //     NavigationService.navigate(routes.BILL_CREATE_EDIT_SCREEN, { bill: item, type: 'edit' })
-    // }
-    const onPressBill = async (item: any) => {
+    const onPressBill = (item: any) => {
         // await setCurrentItem(item);
         // setVisible(true);
         NavigationService.navigate(routes.BILLS_VIEW, { item })
     }
-    // const renderModal = () => {
-    //     return (
-    //         <Modal
-    //             onBackdropPress={() => setVisible(false)}
-    //             isVisible={visible}
-    //             style={{ margin: 0, justifyContent: 'center' }}
-    //             onBackButtonPress={() => setVisible(false)}
-    //             backdropTransitionOutTiming={0}
-    //             animationIn="slideInUp"
-    //             animationOutTiming={500}
-    //             animationOut="slideOutDown"
-    //             presentationStyle={'overFullScreen'}
-    //         >
-    //             <View style={{
-    //                 backgroundColor: 'white',
-    //                 alignSelf: 'center',
-    //                 width: verticalScale(343),
-    //                 height: verticalScale(500)
-    //             }}>
-    //                 <BillsComponentView item={currentItem} onClose={onClose} />
-    //                 {/* {renderBillModal()} */}
-    //             </View>
-    //         </Modal >
-    //     )
-    // }
     const renderBills = ({ item }: { item: any }) => {
         return (
             <TouchableOpacity
@@ -328,7 +188,7 @@ const HomeScreen = (props: Props) => {
                         source={images.img_default_avatar}
                         style={styles.sideMenuProfileIcon}
                     />
-                    <TextBase title={'Nguyen Van A'} style={{
+                    <TextBase title={state.auth.user?.phoneNumber} style={{
                         fontSize: verticalScale(18),
                         marginHorizontal: verticalScale(8)
                     }} />

@@ -3,9 +3,9 @@ import * as React from 'react';
 import {
   FlatList,
   Image,
+  RefreshControl,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   useWindowDimensions,
   View,
@@ -15,19 +15,22 @@ import {
   TabView,
 } from 'react-native-tab-view';
 
-import {
-  faAdd,
-  faClose,
-  faSearch,
-} from '@fortawesome/free-solid-svg-icons';
+import { faAdd } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
+import InputBase from '../../components/InputBase';
+import R from '../../components/R';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { colors } from '../../constants';
-import { products } from '../../mockData/product';
+import { images } from '../../constants/images';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
+import productServices from '../../services/ProductServices';
+import {
+  getMoneyFormat,
+  removeVietnameseTones,
+} from '../../utils/Utils';
 
 interface Props {
   navigation: any
@@ -46,27 +49,42 @@ const ProductScreen = (props: Props) => {
     { key: key.phukien, title: 'Phụ kiện' },
   ]);
   const [index, setIndex] = React.useState<number>(0);
+  const [product, setProcduct] = React.useState([]);
   const [quanList, setQuanList] = React.useState([]);
   const [aoList, setAoList] = React.useState([]);
   const [giayList, setGiayList] = React.useState([]);
   const [phukienList, setPhukienList] = React.useState([]);
   const [searchQuery, setSearchQuery] = React.useState('');
+  const [loading, setLoading] = React.useState<boolean>(false);
+
   React.useEffect(() => {
-    setQuanList(products.filter(item => item.type == key.quan))
-    setAoList(products.filter(item => item.type == key.ao))
-    setGiayList(products.filter(item => item.type == key.giay))
-    setPhukienList(products.filter(item => item.type == key.phukien))
+    void getProduct()
   }, [])
-  const handleSearch = () => {
-    // handle search logic here
-  };
-
-  const handleClear = () => {
-    setSearchQuery('');
-  };
-  const onPressMenu = () => {
-
+  const getProduct = async () => {
+    setLoading(true);
+    const res = await productServices.searchProduct({})
+    if (!res.errorCode) {
+      setProcduct(res.products)
+    }
   }
+  React.useEffect(() => {
+
+    setQuanList(product?.filter(item => item.type == key.quan) || [])
+    setAoList(product?.filter(item => item.type == key.ao) || [])
+    setGiayList(product?.filter(item => item.type == key.giay) || [])
+    setPhukienList(product?.filter(item => item.type == key.phukien) || [])
+    setLoading(false);
+
+  }, [product])
+  React.useEffect(() => {
+    console.log(loading);
+
+    if (loading) {
+      R.Loading.show()
+    } else {
+      R.Loading.hide()
+    }
+  }, [loading])
   const _renderIcon = ({ route, focused }: { route: { key: string, title: string }, focused: boolean }) => (
     <View
       style={{
@@ -117,14 +135,14 @@ const ProductScreen = (props: Props) => {
         NavigationService.navigate(routes.PRODUCT_DETAIL_SCREEN, { item })
       }}
     >
-      <Image source={{ uri: item.images?.[0] }} style={{
+      <Image source={{ uri: item.image?.split(',')?.[0] }} style={{
         width: '100%',
         height: '60%',
       }} resizeMode='cover' />
       <View style={{ flex: 1, overflow: 'hidden', paddingVertical: verticalScale(4), paddingHorizontal: verticalScale(8) }}>
 
         <TextBase title={item.name} style={[styles.titleDetail, { fontSize: verticalScale(14) }]} numberOfLines={2} ellipsizeMode='tail' />
-        <TextBase title={item.price} style={styles.titleDetail} />
+        <TextBase title={`${getMoneyFormat(item.price)} VND`} style={styles.titleDetail} />
         <TextBase title={`Size: ${item.size}`} style={styles.titleDetail} />
       </View>
     </TouchableOpacity>
@@ -143,7 +161,10 @@ const ProductScreen = (props: Props) => {
           }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
-        // isRefresh={isRefresh}
+          // isRefresh={isRefresh}
+          refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={getProduct} />
+          }
         />
       </View>
     )
@@ -165,6 +186,30 @@ const ProductScreen = (props: Props) => {
         return null;
     }
   };
+  const onChangeSearchText = (txt: string, index: number) => {
+    const newDataFillter = product.filter((item: { name: string; type: number }) => {
+      const itemData = removeVietnameseTones(item.name).toUpperCase();
+      const textData = removeVietnameseTones(txt).toUpperCase();
+      return (itemData.indexOf(textData) > -1 && item.type == index);
+    }) || [];
+    console.log('new search', newDataFillter);
+    switch (index) {
+      case 0:
+        setQuanList(newDataFillter)
+        break;
+      case 1:
+        setAoList(newDataFillter)
+        break;
+      case 2:
+        setGiayList(newDataFillter)
+        break;
+      case 3:
+        setPhukienList(newDataFillter)
+        break;
+      default:
+        break;
+    }
+  }
   return (
     <SafeAreaView style={styles.container}>
       {/* <TouchableOpacity onPress={() => onPressMenu()}
@@ -172,25 +217,24 @@ const ProductScreen = (props: Props) => {
                 <FontAwesomeIcon icon={faHouse} size={verticalScale(50)} />
             </TouchableOpacity>
             <Text>ProductScreen</Text> */}
-      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'flex-start', margin: verticalScale(16) }}>
 
-        <View style={styles.inputWrapper}>
-          <FontAwesomeIcon icon={faSearch} size={verticalScale(18)} color={colors.grayColor} />
-          {/* <Ionicons name="ios-search" size={24} color="#C7C7CD" /> */}
-          <TextInput
-            placeholder="Search"
-            value={searchQuery}
-            onChangeText={setSearchQuery}
-            onSubmitEditing={handleSearch}
-            style={styles.input}
-          />
-          {searchQuery.length > 0 && (
-            <TouchableOpacity onPress={handleClear}>
-              <FontAwesomeIcon icon={faClose} size={20} />
-              {/* <Ionicons name="ios-close" size={24} color="#C7C7CD" /> */}
-            </TouchableOpacity>
-          )}
-        </View>
+        <InputBase
+          // titleInput={this.state.jobTypeChosen.length >= 3 ? "Bạn đã chọn tối đa 3 ngành nghề cho phép" : 'Chọn tối đa 3 ngành nghề'}
+          // titleInputStyle={{ marginLeft: 0, fontWeight: '400', color: this.state.jobTypeChosen.length >= 3 ? R.colors.warningColor : R.colors.textColor }}
+          style={{ width: '85%', marginRight: verticalScale(8), borderWidth: 1, borderRadius: 10, borderColor: colors.borderColor }}
+          initValue={''}
+          onFocus={() => { }}
+          placeholder={'Tìm kiếm khách hàng'}
+          placeholderColor={colors.greyColor}
+          type={'NORMAL'}
+          onChangeText={txt => onChangeSearchText(txt, index)}
+          iconRight={images.icon_search}
+          iconRightStyle={{ width: verticalScale(25), height: verticalScale(25) }}
+          contentStyle={{ backgroundColor: colors.borderGreyColor }}
+          borderColor={colors.borderGreyColor}
+        />
+
         <TouchableOpacity onPress={() => {
           NavigationService.navigate(routes.PRODUCT_EDIT, { item: {} })
         }}
