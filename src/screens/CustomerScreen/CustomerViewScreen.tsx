@@ -15,12 +15,14 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import HeaderView from '../../components/HeaderView';
+import R from '../../components/R';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { colors } from '../../constants';
 import { bills } from '../../mockData/bills';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
+import userService from '../../services/UserService';
 import { converTimeStamp } from '../../utils/Utils';
 
 interface Props {
@@ -28,9 +30,26 @@ interface Props {
 }
 export const CustomerViewScreen = (props: Props) => {
     const { item } = props.route.params;
+    const [customer, setCustomer] = React.useState();
     console.log('item', item);
+    React.useEffect(() => {
+        setCustomer(item)
+        void getCustomer()
+    }, [item])
+    const getCustomer = async () => {
+        R.Loading.show()
+        const res = await userService.getUserById(item?.id);
+        if (!res.errorCode) {
+            setCustomer(res.userInfo)
+        }
+        R.Loading.hide()
+
+    }
     const onPressEdit = () => {
-        NavigationService.navigate(routes.CUSTOMER_EDIT, { item })
+        NavigationService.navigate(routes.CUSTOMER_EDIT, { item: customer, callback: (dt: any) => callBack(dt) })
+    }
+    const callBack = (dt: any) => {
+        setCustomer(dt)
     }
     const onPressBill = (item: any) => {
         NavigationService.navigate(routes.BILLS_VIEW, { item })
@@ -87,20 +106,14 @@ export const CustomerViewScreen = (props: Props) => {
 
             }}>
                 <TextBase title={'Khách hàng:  '} style={styles.customerInfo}>
-                    <TextBase title={item?.name} style={styles.customerInfo_text} />
+                    <TextBase title={customer?.name} style={styles.customerInfo_text} />
                 </TextBase>
                 <TextBase title={'SĐT:  '} style={styles.customerInfo}>
-                    <TextBase title={item?.phoneNumber} style={styles.customerInfo_text} />
+                    <TextBase title={customer?.phoneNumber} style={styles.customerInfo_text} />
                 </TextBase>
                 <TextBase title={'Địa chỉ:  '} style={styles.customerInfo}>
-                    <TextBase title={item?.address} style={styles.customerInfo_text} />
+                    <TextBase title={customer?.address} style={styles.customerInfo_text} />
                 </TextBase>
-                <TextBase title={'Thời gian thuê:  '} style={styles.customerInfo}>
-                    <TextBase title={converTimeStamp(item?.startDate)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
-                    <TextBase title={' - '} />
-                    <TextBase title={converTimeStamp(item?.endDate)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
-                </TextBase>
-
             </View>
             <View style={{
                 flex: 1

@@ -2,6 +2,7 @@ import React from 'react';
 
 import {
     FlatList,
+    RefreshControl,
     SafeAreaView,
     StyleSheet,
     TouchableOpacity,
@@ -9,6 +10,7 @@ import {
 } from 'react-native';
 
 import {
+    faAdd,
     faPhone,
     faTruckFast,
     faUser,
@@ -17,7 +19,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import HeaderView from '../../components/HeaderView';
 import InputBase from '../../components/InputBase';
-import R from '../../components/R';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { colors } from '../../constants';
@@ -25,14 +26,30 @@ import { images } from '../../constants/images';
 import { customer } from '../../mockData/customer';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
+import userService from '../../services/UserService';
 import { removeVietnameseTones } from '../../utils/Utils';
 
 const CustomerScreen = () => {
     const [data, setData] = React.useState<any>([])
+    const [allData, setAllData] = React.useState<any>([])
+
+    const [loading, setLoading] = React.useState<boolean>(false);
+
     React.useEffect(() => {
         setData(customer)
+        void getCustomer()
     }, [])
+    const getCustomer = async () => {
+        setLoading(true);
 
+        const res = await userService.searchUser({})
+        if (!res.errorCode) {
+            setData(res.userInfo)
+            setAllData(res.userInfo)
+        }
+        setLoading(false);
+
+    }
     const renderCustom = ({ item }: { item: any }) => {
         return (
             <TouchableOpacity
@@ -56,33 +73,61 @@ const CustomerScreen = () => {
     return (
         <SafeAreaView style={styles.container}>
             <HeaderView title='Khách hàng' />
-            <InputBase
-                // titleInput={this.state.jobTypeChosen.length >= 3 ? "Bạn đã chọn tối đa 3 ngành nghề cho phép" : 'Chọn tối đa 3 ngành nghề'}
-                // titleInputStyle={{ marginLeft: 0, fontWeight: '400', color: this.state.jobTypeChosen.length >= 3 ? R.colors.warningColor : R.colors.textColor }}
-                style={{ alignSelf: 'center', width: R.DEVICE_WIDTH - verticalScale(30), marginTop: verticalScale(10), marginBottom: verticalScale(20), borderWidth: 1, borderRadius: 10, borderColor: colors.borderColor }}
-                initValue={''}
-                onFocus={() => { }}
-                placeholder={'Tìm kiếm khách hàng'}
-                placeholderColor={colors.greyColor}
-                type={'NORMAL'}
-                onChangeText={txt => {
-                    const newDataFillter = customer.filter((item: { name: any; address: any; addressDetail: any; label: any; }) => {
-                        const itemData = removeVietnameseTones(item.name || item.address || item.addressDetail || item.label).toUpperCase();
-                        const textData = removeVietnameseTones(txt).toUpperCase();
-                        return itemData.indexOf(textData) > -1;
-                    }) || [];
-                    console.log('new search', newDataFillter);
-                    setData(newDataFillter)
+            <View style={{ flexDirection: 'row', width: '100%', alignItems: 'center', justifyContent: 'flex-start', margin: verticalScale(16) }}>
+
+                <InputBase
+                    // titleInput={this.state.jobTypeChosen.length >= 3 ? "Bạn đã chọn tối đa 3 ngành nghề cho phép" : 'Chọn tối đa 3 ngành nghề'}
+                    // titleInputStyle={{ marginLeft: 0, fontWeight: '400', color: this.state.jobTypeChosen.length >= 3 ? R.colors.warningColor : R.colors.textColor }}
+                    style={{ width: '85%', marginRight: verticalScale(8), borderWidth: 1, borderRadius: 10, borderColor: colors.borderColor }}
+                    initValue={''}
+                    onFocus={() => { }}
+                    placeholder={'Tìm kiếm SDT'}
+                    placeholderColor={colors.greyColor}
+                    type={'NORMAL'}
+                    onChangeText={txt => {
+                        const newDataFillter = allData.filter((item: { name: string; address: string; phoneNumber: string; }) => {
+                            const itemData = removeVietnameseTones(item.phoneNumber || item.name).toUpperCase();
+                            const textData = removeVietnameseTones(txt).toUpperCase();
+                            return itemData.indexOf(textData) > -1;
+                        }) || [];
+                        console.log('new search', newDataFillter);
+                        setData(newDataFillter)
+                    }}
+                    iconRight={images.icon_search}
+                    iconRightStyle={{ width: verticalScale(25), height: verticalScale(25) }}
+                    contentStyle={{ backgroundColor: colors.borderGreyColor }}
+                    borderColor={colors.borderGreyColor}
+                />
+                <TouchableOpacity onPress={() => {
+                    NavigationService.navigate(routes.CUSTOMER_EDIT, { item: {} })
                 }}
-                iconRight={images.icon_search}
-                iconRightStyle={{ width: verticalScale(25), height: verticalScale(25) }}
-                contentStyle={{ backgroundColor: colors.borderGreyColor }}
-                borderColor={colors.borderGreyColor}
-            />
+                    style={{
+                        width: verticalScale(22),
+                        height: verticalScale(22),
+                        marginRight: verticalScale(16),
+                        borderWidth: 1,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        borderRadius: 20,
+                        borderColor: colors.grayColor
+                    }}
+                >
+                    <FontAwesomeIcon icon={faAdd} size={24} color={colors.grayColor} />
+                </TouchableOpacity>
+            </View>
             <FlatList
                 data={data}
                 keyExtractor={(item: any) => `item-${item.id}`}
                 renderItem={renderCustom}
+                refreshControl={
+                    <RefreshControl refreshing={loading} onRefresh={getCustomer} />
+                }
+                ListEmptyComponent={() => <TextBase title={'Chưa có khác hàng'} style={{
+                    fontSize: verticalScale(16),
+                    alignSelf: 'center',
+                    marginVertical: verticalScale(40),
+                    color: colors.grayColor
+                }} />}
             // isRefresh={isRefresh}
             >
             </FlatList>

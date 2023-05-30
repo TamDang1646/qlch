@@ -6,28 +6,81 @@ import {
     TextInput,
     View,
 } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 
 import BaseButton from '../../components/BaseButton';
 import HeaderView from '../../components/HeaderView';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { colors } from '../../constants';
+import NavigationService from '../../navigation/NavigationService';
+import userService from '../../services/UserService';
 
 interface Props {
     route: any
 }
 const CustomerEdit = (props: Props) => {
-    const { item } = props.route.params;
+    const { item, callback } = props.route.params;
     const [customerName, setCustomerName] = React.useState<string>('');
     const [customerPhoneNumber, setCustomerPhoneNumber] = React.useState<string>('');
     const [customerAddress, setCustomerAddress] = React.useState<string>('');
     React.useEffect(() => {
-        setCustomerName(item?.name)
-        setCustomerPhoneNumber(item?.phoneNumber)
-        setCustomerAddress(item?.address)
+        if (item?.id) {
+            setCustomerName(item?.name)
+            setCustomerPhoneNumber(item?.phoneNumber)
+            setCustomerAddress(item?.address)
+        }
     }, [])
-    const onNextPress = () => {
+    const onNextPress = async () => {
+        let data = {
+            name: customerName,
+            phoneNumber: customerPhoneNumber,
+            address: customerAddress
+        }
 
+        if (item?.id) {
+            console.log('update', data);
+            const res = await userService.updateUserInfo(item.id, data);
+            if (!res.errorCode) {
+                showMessage({
+                    message: 'Update succes!',
+                    type: 'success',
+                    icon: 'success',
+                    autoHide: true
+                })
+                callback?.(res.userInfo);
+                NavigationService.back()
+            } else {
+                showMessage({
+                    message: res.errorMsg,
+                    type: 'danger',
+                    icon: 'danger',
+                    autoHide: true
+                })
+            }
+
+        } else {
+            console.log('addd', data);
+            const res = await userService.createUser(data);
+            if (!res.errorCode) {
+                showMessage({
+                    message: 'Thêm mới thành công!',
+                    type: 'success',
+                    icon: 'success',
+                    autoHide: true
+                })
+                callback?.();
+
+                NavigationService.back()
+            } else {
+                showMessage({
+                    message: res.errorMsg,
+                    type: 'danger',
+                    icon: 'danger',
+                    autoHide: true
+                })
+            }
+        }
     }
     return (
         <SafeAreaView style={{ flex: 1 }}>
@@ -73,7 +126,7 @@ const CustomerEdit = (props: Props) => {
                     placeholderTextColor={colors.grayColor}
                 />
             </View>
-            <BaseButton title={'Cập nhật'} style={{
+            <BaseButton title={item?.id ? 'Cập nhật' : 'Thêm mới'} style={{
                 width: verticalScale(150),
                 alignSelf: 'center',
                 alignItems: 'center',
