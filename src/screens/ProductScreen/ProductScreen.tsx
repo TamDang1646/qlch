@@ -165,6 +165,12 @@ const ProductScreen = (props: Props) => {
           refreshControl={
             <RefreshControl refreshing={loading} onRefresh={getProduct} />
           }
+          ListEmptyComponent={() => <TextBase title={'Chưa có mặt hàng phù hợp'} style={{
+            fontSize: verticalScale(16),
+            alignSelf: 'center',
+            marginVertical: verticalScale(40),
+            color: colors.grayColor
+          }} />}
         />
       </View>
     )
@@ -225,7 +231,7 @@ const ProductScreen = (props: Props) => {
           style={{ width: '85%', marginRight: verticalScale(8), borderWidth: 1, borderRadius: 10, borderColor: colors.borderColor }}
           initValue={''}
           onFocus={() => { }}
-          placeholder={'Tìm kiếm khách hàng'}
+          placeholder={'Tìm kiếm mặt hàng'}
           placeholderColor={colors.greyColor}
           type={'NORMAL'}
           onChangeText={txt => onChangeSearchText(txt, index)}

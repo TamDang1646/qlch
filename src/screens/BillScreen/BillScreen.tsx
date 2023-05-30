@@ -13,7 +13,9 @@ import Modal from 'react-native-modal';
 
 import {
     faAdd,
+    faClock,
     faFilter,
+    faMoneyBill,
     faTruckFast,
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
@@ -62,13 +64,13 @@ const BillScreen = (props: Props) => {
                     <TextBase title={`Địa chỉ: ${item?.address}`} />
                 </View>
                 <View style={styles.itemLable}>
-                    <FontAwesomeIcon icon={faTruckFast} style={styles.itemLableIcon} color='green' />
+                    <FontAwesomeIcon icon={faMoneyBill} style={styles.itemLableIcon} color='green' />
                     <TextBase title={'Tổng hoá đơn:  '}>
                         <TextBase title={item?.totalPrice} style={{ fontSize: verticalScale(20), color: '#EB5500' }} />
                     </TextBase>
                 </View>
                 <View style={styles.itemLable}>
-                    <FontAwesomeIcon icon={faTruckFast} style={styles.itemLableIcon} color='green' />
+                    <FontAwesomeIcon icon={faClock} style={styles.itemLableIcon} color='green' />
                     <TextBase title={'Thời gian thuê:  '}>
                         <TextBase title={converTimeStamp(item?.startDate)} style={{ fontSize: verticalScale(18), color: '#EB5500' }} />
                         <TextBase title={' - '} />
