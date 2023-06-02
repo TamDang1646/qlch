@@ -44,7 +44,7 @@ const CustomSidebarMenu = () => {
                         source={images.img_default_avatar}
                         style={styles.sideMenuProfileIcon}
                     />
-                    <Text style={styles.userText}>{state.auth.user?.role == 0 ? 'admin' : 'staff'}</Text>
+                    <Text style={styles.userText}>{state.auth.user?.role == 0 ? 'Admin' : 'Nhân viên'}</Text>
                 </View>
                 <TextBase style={styles.userName}>{state.auth.user?.phoneNumber}</TextBase>
             </LinearGradient>
@@ -52,32 +52,50 @@ const CustomSidebarMenu = () => {
             <DrawerContentScrollView style={{
                 marginTop: verticalScale(16)
             }}>
+                {
+                    state.auth.user?.role == 0 ?
+                        <>
+                            <DrawerItem
+                                label="Thêm nhân viên"
+                                onPress={() => NavigationService.navigate(routes.ADD_NEW_STAFF_SCREEN, { item: {} })}
+                                style={styles.dashboard}
+                                labelStyle={styles.lableStyle}
+                            />
+                            <DrawerItem
+                                label="Danh sách tài khoản"
+                                onPress={() => NavigationService.navigate(routes.LIST_STAFF_SCREEN)}
+                                style={styles.dashboard}
+                                labelStyle={styles.lableStyle}
+                            />
+                        </>
+                        : <View></View>
+                }
                 <DrawerItem
-                    label="Dashboard"
+                    label="Trang chính"
                     onPress={() => NavigationService.navigate(routes.HOME_SCREEN)}
                     style={styles.dashboard}
                     labelStyle={styles.lableStyle}
                 />
                 <DrawerItem
-                    label="Products"
+                    label="QL Sản phẩm"
                     onPress={() => { NavigationService.navigate(routes.PRODUCT_SCREEN) }}
                     style={styles.dashboard}
                     labelStyle={styles.lableStyle}
                 />
                 <DrawerItem
-                    label="Bills"
+                    label="QL Hóa đơn"
                     onPress={() => { NavigationService.navigate(routes.BILL_SCREEN) }}
                     style={styles.dashboard}
                     labelStyle={styles.lableStyle}
                 />
                 <DrawerItem
-                    label="Customers"
+                    label="QL Khách hàng"
                     onPress={() => { NavigationService.navigate(routes.CUSTOMER_SCREEN) }}
                     style={styles.dashboard}
                     labelStyle={styles.lableStyle}
                 />
                 <DrawerItem
-                    label="Log Out"
+                    label="Đăng xuất"
                     onPress={() => { dispatch(AuthActions.logoutCompleted()) }}
                     style={styles.dashboard}
                     labelStyle={styles.lableStyle}

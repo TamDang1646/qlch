@@ -15,17 +15,17 @@ import {
   TabView,
 } from 'react-native-tab-view';
 
-import { faAdd } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import {faAdd} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 
 import InputBase from '../../components/InputBase';
 import R from '../../components/R';
-import { verticalScale } from '../../components/Scales';
+import {verticalScale} from '../../components/Scales';
 import TextBase from '../../components/TextBase';
-import { colors } from '../../constants';
-import { images } from '../../constants/images';
+import {colors} from '../../constants';
+import {images} from '../../constants/images';
 import NavigationService from '../../navigation/NavigationService';
-import { routes } from '../../navigation/Routes';
+import {routes} from '../../navigation/Routes';
 import productServices from '../../services/ProductServices';
 import {
   getMoneyFormat,
@@ -66,6 +66,8 @@ const ProductScreen = (props: Props) => {
     if (!res.errorCode) {
       setProcduct(res.products)
     }
+    setLoading(false);
+
   }
   React.useEffect(() => {
 

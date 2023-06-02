@@ -4,6 +4,7 @@ import * as React from 'react';
 import {
     FlatList,
     Image,
+    RefreshControl,
     SafeAreaView,
     StyleSheet,
     TouchableOpacity,
@@ -20,32 +21,40 @@ import {
     faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
-import Alert from '../../components/Alert';
 import BaseButton from '../../components/BaseButton';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { colors } from '../../constants';
 import { images } from '../../constants/images';
-import { bills } from '../../mockData/bills';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
-import { converTimeStamp } from '../../utils/Utils';
+import billsServices from '../../services/BillService';
+import {
+    converTimeStamp,
+    getMoneyFormat,
+} from '../../utils/Utils';
 
 interface Props {
     navigation: any
 }
 const BillScreen = (props: Props) => {
     const [visibleFilter, setVisibleFilter] = React.useState(false)
-    const [startDate, setStartDate] = React.useState('');
-    const [endDate, setEndDate] = React.useState('');
-    const onClose = () => {
-        console.log('close');
-        Alert.close();
-    }
-    const onPressEdit = (item: any) => {
-        onClose?.()
-        NavigationService.navigate(routes.BILL_CREATE_EDIT_SCREEN, { bill: item, type: 'edit' })
+    const [startDate, setStartDate] = React.useState(new Date().getTime());
+    const [endDate, setEndDate] = React.useState(new Date().getTime());
+    const [bills, setBills] = React.useState([])
+    const [loading, setLoading] = React.useState<boolean>(false);
+    React.useEffect(() => {
+        void getBills({})
+    }, [])
+    const getBills = async (param: any) => {
+        setLoading(true)
+        const res = await billsServices.searchBills(param);
+        if (!res.errorCode) {
+            setBills(res.billss)
+        }
+        setLoading(false)
     }
     const onPressBill = (item: any) => {
         NavigationService.navigate(routes.BILLS_VIEW, { item })
@@ -57,7 +66,7 @@ const BillScreen = (props: Props) => {
                 style={[styles.billsItem, { backgroundColor: item.expire ? item.paid ? '#C8FFA6' : '#FFD9D9' : styles.billsItem.backgroundColor }]}>
                 <View style={styles.itemLable}>
                     <FontAwesomeIcon icon={faUser} style={styles.itemLableIcon} color='green' />
-                    <TextBase title={`${item?.customer?.name} - ${item?.customer?.phoneNumber}`} />
+                    <TextBase title={`${item?.customerName} - ${item?.customerPhonenumber}`} />
                 </View>
                 <View style={styles.itemLable}>
                     <FontAwesomeIcon icon={faTruckFast} style={styles.itemLableIcon} color='green' />
@@ -66,15 +75,15 @@ const BillScreen = (props: Props) => {
                 <View style={styles.itemLable}>
                     <FontAwesomeIcon icon={faMoneyBill} style={styles.itemLableIcon} color='green' />
                     <TextBase title={'Tổng hoá đơn:  '}>
-                        <TextBase title={item?.totalPrice} style={{ fontSize: verticalScale(20), color: '#EB5500' }} />
+                        <TextBase title={getMoneyFormat(item?.totalPrice) + ' VND'} style={{ fontSize: verticalScale(20), color: '#EB5500' }} />
                     </TextBase>
                 </View>
                 <View style={styles.itemLable}>
                     <FontAwesomeIcon icon={faClock} style={styles.itemLableIcon} color='green' />
                     <TextBase title={'Thời gian thuê:  '}>
-                        <TextBase title={converTimeStamp(item?.startDate)} style={{ fontSize: verticalScale(18), color: '#EB5500' }} />
+                        <TextBase title={item?.start?.slice(0, 10)} style={{ fontSize: verticalScale(18), color: '#EB5500' }} />
                         <TextBase title={' - '} />
-                        <TextBase title={converTimeStamp(item?.endDate)} style={{ fontSize: verticalScale(18), color: '#EB5500' }} />
+                        <TextBase title={item?.end?.slice(0, 10)} style={{ fontSize: verticalScale(18), color: '#EB5500' }} />
                     </TextBase>
                 </View>
                 {item.expire && !item.paid ? <View
@@ -98,18 +107,48 @@ const BillScreen = (props: Props) => {
             </TouchableOpacity>
         )
     }
+
+    const setStartDay = () => {
+        DateTimePickerAndroid.open({
+            value: new Date(startDate),
+            onChange: (_, selectedDate) => {
+                setStartDate(selectedDate?.getTime())
+            },
+            mode: 'date',
+            is24Hour: true,
+        });
+    };
+    const setEndDay = () => {
+        DateTimePickerAndroid.open({
+            value: new Date(endDate),
+            onChange: (_, selectedDate) => {
+                setEndDate(selectedDate?.getTime())
+            },
+            mode: 'date',
+            is24Hour: true,
+        });
+    };
     const onSelectTime = (index: number) => {
         switch (index) {
             case 0:
+                setStartDay()
                 break;
             case 1:
+                setEndDay()
                 break;
             default:
                 break;
         }
     }
     const onNextPress = () => {
+        const data = {
+            start: startDate,
+            end: endDate
+        }
+        console.log('data', data);
+        setVisibleFilter(false)
 
+        void getBills(data)
     }
     const arrangeModal = () => {
         return (
@@ -191,7 +230,7 @@ const BillScreen = (props: Props) => {
                             >
                                 <TextBase title={'Thuê từ ngày'} style={{ position: 'absolute', top: -15, left: 7, flexDirection: 'row' }} />
 
-                                {startDate?.length > 0
+                                {startDate
                                     ? <TextBase title={converTimeStamp(startDate)} style={styles.time} />
                                     : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
                                 }
@@ -201,7 +240,7 @@ const BillScreen = (props: Props) => {
                                 onPress={() => onSelectTime(1)}
                             >
                                 <TextBase title={'Đến ngày'} style={{ position: 'absolute', top: -15, left: 7, flexDirection: 'row' }} />
-                                {endDate && endDate?.length > 0
+                                {endDate
                                     ? <TextBase title={converTimeStamp(endDate)} style={styles.time} />
                                     : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
                                 }
@@ -238,7 +277,7 @@ const BillScreen = (props: Props) => {
                             setVisibleFilter(true)
                         }}
                     >
-                        <TextBase title={'Filter'} style={{
+                        <TextBase title={'Tìm kiếm'} style={{
                             fontSize: verticalScale(18),
                             color: '#A8A8A8'
                         }}
@@ -265,7 +304,17 @@ const BillScreen = (props: Props) => {
                 data={bills}
                 keyExtractor={(item: any) => `item-${item.id}`}
                 renderItem={renderBills}
-            // isRefresh={isRefresh}
+                // isRefresh={isRefresh}
+                refreshControl={
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    <RefreshControl refreshing={loading} onRefresh={getBills} />
+                }
+                ListEmptyComponent={() => <TextBase title={'Chưa có hóa đơn nào'} style={{
+                    fontSize: verticalScale(16),
+                    alignSelf: 'center',
+                    marginVertical: verticalScale(40),
+                    color: colors.grayColor
+                }} />}
             >
             </FlatList>
         </View>

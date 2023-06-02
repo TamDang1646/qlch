@@ -11,4 +11,5 @@ export interface User {
   birthday: string
   status: number
   totalPost: number
+  role: number
 }

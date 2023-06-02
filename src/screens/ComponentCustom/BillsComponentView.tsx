@@ -6,7 +6,6 @@ import {
     SafeAreaView,
     ScrollView,
     StyleSheet,
-    TouchableOpacity,
     View,
 } from 'react-native';
 
@@ -18,7 +17,6 @@ import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
 import {
     convertFullTimeStamp,
-    converTimeStamp,
     getMoneyFormat,
 } from '../../utils/Utils';
 
@@ -72,18 +70,18 @@ const BillsComponentView = (props: Props) => {
                     borderStyle: 'dashed'
                 }}>
                     <TextBase title={'Khách hàng:  '} style={styles.customerInfo}>
-                        <TextBase title={item?.customer.name} style={styles.customerInfo_text} />
+                        <TextBase title={item?.customerName} style={styles.customerInfo_text} />
                     </TextBase>
                     <TextBase title={'SĐT:  '} style={styles.customerInfo}>
-                        <TextBase title={item?.customer.phoneNumber} style={styles.customerInfo_text} />
+                        <TextBase title={item?.customerPhonenumber} style={styles.customerInfo_text} />
                     </TextBase>
                     <TextBase title={'Địa chỉ:  '} style={styles.customerInfo}>
-                        <TextBase title={item?.customer.address} style={styles.customerInfo_text} />
+                        <TextBase title={item?.address} style={styles.customerInfo_text} />
                     </TextBase>
                     <TextBase title={'Thời gian thuê:  '} style={styles.customerInfo}>
-                        <TextBase title={converTimeStamp(item?.startDate)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
+                        <TextBase title={item?.start?.slice(0, 10)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
                         <TextBase title={' - '} />
-                        <TextBase title={converTimeStamp(item?.endDate)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
+                        <TextBase title={item?.end?.slice(0, 10)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
                     </TextBase>
 
                 </View>
@@ -98,7 +96,7 @@ const BillsComponentView = (props: Props) => {
                         <ScrollView style={{ width: '100%', height: verticalScale(100) }}>
                             {item?.items?.map((i: any) => {
                                 return (
-                                    <View style={{ flexDirection: 'row', width: '100%', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                                    <View key={`item-bill-${i.id}`} style={{ flexDirection: 'row', width: '100%', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                                         <TextBase title={i.name} style={{ flex: 3, color: '#827878' }} numberOfLines={1} ellipsizeMode='tail' />
                                         <TextBase title={`x${i.quantity}`} style={{ flex: 0.5, color: '#827878' }} />
                                         <TextBase title={getMoneyFormat(i.price) + ' đ'} style={{ flex: 1.5, color: '#827878', textAlign: 'right' }} />
@@ -117,20 +115,7 @@ const BillsComponentView = (props: Props) => {
                     </View>
                 </View>
             </View>
-            <TouchableOpacity style={{
-                width: verticalScale(150),
-                height: verticalScale(50),
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 20,
-                backgroundColor: '#A2FDA0',
-                alignSelf: 'center',
-                margin: verticalScale(8)
-            }}
-                onPress={onPressEdit}
-            >
-                <TextBase title={'Chỉnh sửa'} />
-            </TouchableOpacity>
+
         </SafeAreaView>
     )
 }

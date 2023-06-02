@@ -10,5 +10,7 @@ export const routes = {
     CUSTOMER_VIEW: 'CustomerViewScreen',
     CUSTOMER_EDIT: 'CustomerEditScreen',
     PRODUCT_EDIT: 'ProductEditScreen',
-    PRODUCT_DETAIL_SCREEN: 'ProductDetailScreen'
+    PRODUCT_DETAIL_SCREEN: 'ProductDetailScreen',
+    ADD_NEW_STAFF_SCREEN: 'AddNewStaffScreen',
+    LIST_STAFF_SCREEN: 'ListStaffScreen',
 }

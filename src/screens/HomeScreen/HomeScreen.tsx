@@ -4,6 +4,7 @@ import * as React from 'react';
 import {
     FlatList,
     Image,
+    RefreshControl,
     SafeAreaView,
     StyleSheet,
     TouchableOpacity,
@@ -26,12 +27,13 @@ import { useDrawerStatus } from '@react-navigation/drawer';
 
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
+import { colors } from '../../constants';
 import { images } from '../../constants/images';
-import { bills } from '../../mockData/bills';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
+import billsServices from '../../services/BillService';
 import { useAppSelector } from '../../stores';
-import { converTimeStamp } from '../../utils/Utils';
+import { getMoneyFormat } from '../../utils/Utils';
 
 interface Props {
     navigation: any
@@ -41,6 +43,35 @@ const HomeScreen = (props: Props) => {
     const isDrawerOpen = useDrawerStatus() === 'open';
     // const [isRefresh,setIsRefresh] = React.useState(false);
     const state = useAppSelector(state => state)
+    const [bills, setBills] = React.useState([])
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const [totalM, setTotalM] = React.useState<any>('0')
+    const [totalB, setTotalB] = React.useState<any>('0')
+    const [totalP, setTotalP] = React.useState<any>('0')
+    const [totalC, setTotalC] = React.useState<any>('0')
+    React.useEffect(() => {
+        setLoading(true)
+
+        void getBills()
+        void getInfo()
+        setLoading(false)
+
+    }, [])
+    const getInfo = async () => {
+        const res = await billsServices.getiInfo();
+        if (!res.errorCode) {
+            setTotalM(res.data?.totalDeposit)
+            setTotalB(res.data?.totalBill)
+            setTotalP(res.data?.totalProduct)
+            setTotalC(res.data?.totalCustomer)
+        }
+    }
+    const getBills = async () => {
+        const res = await billsServices.searchBills({});
+        if (!res.errorCode) {
+            setBills(res.billss)
+        }
+    }
     const onPressMenu = () => {
         if (isDrawerOpen) {
             navigation.closeDrawer();
@@ -57,14 +88,14 @@ const HomeScreen = (props: Props) => {
                         style={[styles.dash, {}]}>
                         <FontAwesomeIcon icon={faMoneyBill} size={verticalScale(30)} color='#F96868' style={{ marginBottom: verticalScale(8) }} />
                         <TextBase title={'Money'} style={styles.text} />
-                        <TextBase title={'25000$'} style={styles.text1} />
+                        <TextBase title={getMoneyFormat(totalM)} style={styles.text1} />
                     </LinearGradient>
                     <LinearGradient
                         colors={['#99E7FF', '#89DCFF', '#73E6FF']}
                         style={[styles.dash, {}]}>
                         <FontAwesomeIcon icon={faFileAlt} size={verticalScale(30)} color='#F96868' style={{ marginBottom: verticalScale(8) }} />
                         <TextBase title={'Bills'} style={styles.text} />
-                        <TextBase title={'26'} style={styles.text1} />
+                        <TextBase title={totalB} style={styles.text1} />
                     </LinearGradient>
                 </View>
                 <View style={styles.rowDash}>
@@ -74,14 +105,14 @@ const HomeScreen = (props: Props) => {
                         style={[styles.dash, {}]}>
                         <FontAwesomeIcon icon={faProcedures} size={verticalScale(30)} color='#F96868' style={{ marginBottom: verticalScale(8) }} />
                         <TextBase title={'Products'} style={styles.text} />
-                        <TextBase title={'156'} style={styles.text1} />
+                        <TextBase title={totalP} style={styles.text1} />
                     </LinearGradient>
                     <LinearGradient
                         colors={['#B2FFC8', '#9DFFA7', '#86FF8B']}
                         style={[styles.dash, {}]}>
                         <FontAwesomeIcon icon={faUserFriends} size={verticalScale(30)} color='#F96868' style={{ marginBottom: verticalScale(8) }} />
                         <TextBase title={'Customers'} style={styles.text} />
-                        <TextBase title={'30'} style={styles.text1} />
+                        <TextBase title={totalC} style={styles.text1} />
                     </LinearGradient>
                 </View>
             </View>
@@ -95,12 +126,11 @@ const HomeScreen = (props: Props) => {
     const renderBills = ({ item }: { item: any }) => {
         return (
             <TouchableOpacity
-                key={`index-${item.id}`}
                 onPress={() => onPressBill(item)}
                 style={[styles.billsItem, { backgroundColor: item.expire ? item.paid ? '#C8FFA6' : '#FFD9D9' : styles.billsItem.backgroundColor }]}>
                 <View style={styles.itemLable}>
                     <FontAwesomeIcon icon={faUser} style={styles.itemLableIcon} color='green' />
-                    <TextBase title={`${item?.customer?.name} - ${item?.customer?.phoneNumber}`} />
+                    <TextBase title={`${item?.customerName} - ${item?.customerPhonenumber}`} />
                 </View>
                 <View style={styles.itemLable}>
                     <FontAwesomeIcon icon={faTruckFast} style={styles.itemLableIcon} color='green' />
@@ -109,15 +139,15 @@ const HomeScreen = (props: Props) => {
                 <View style={styles.itemLable}>
                     <FontAwesomeIcon icon={faMoneyBill} style={styles.itemLableIcon} color='green' />
                     <TextBase title={'Tổng hoá đơn:  '}>
-                        <TextBase title={item?.totalPrice} style={{ fontSize: verticalScale(20), color: '#EB5500' }} />
+                        <TextBase title={getMoneyFormat(item?.totalPrice) + ' VND'} style={{ fontSize: verticalScale(20), color: '#EB5500' }} />
                     </TextBase>
                 </View>
                 <View style={styles.itemLable}>
                     <FontAwesomeIcon icon={faClock} style={styles.itemLableIcon} color='green' />
                     <TextBase title={'Thời gian thuê:  '}>
-                        <TextBase title={converTimeStamp(item?.startDate)} style={{ fontSize: verticalScale(18), color: '#EB5500' }} />
+                        <TextBase title={item?.start?.slice(0, 10)} style={{ fontSize: verticalScale(18), color: '#EB5500' }} />
                         <TextBase title={' - '} />
-                        <TextBase title={converTimeStamp(item?.endDate)} style={{ fontSize: verticalScale(18), color: '#EB5500' }} />
+                        <TextBase title={item?.end?.slice(0, 10)} style={{ fontSize: verticalScale(18), color: '#EB5500' }} />
                     </TextBase>
                 </View>
                 {item.expire && !item.paid ? <View
@@ -172,6 +202,20 @@ const HomeScreen = (props: Props) => {
                 data={bills}
                 keyExtractor={(item: any) => `item-${item.id}`}
                 renderItem={renderBills}
+                refreshControl={
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    <RefreshControl refreshing={loading} onRefresh={() => {
+                        void getBills()
+                        void getInfo()
+
+                    }} />
+                }
+                ListEmptyComponent={() => <TextBase title={'Chưa có hóa đơn nào'} style={{
+                    fontSize: verticalScale(16),
+                    alignSelf: 'center',
+                    marginVertical: verticalScale(40),
+                    color: colors.grayColor
+                }} />}
             // isRefresh={isRefresh}
             >
             </FlatList>

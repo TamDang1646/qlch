@@ -4,6 +4,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import R from '../components/R';
+import AddNewStaffScreen from '../screens/AddNewStaff/AddNewStaff';
+import ListStaffScreen from '../screens/AddNewStaff/ListStaff';
 import BillCreateEdit from '../screens/BillScreen/BillCreateEdit';
 import BillScreen from '../screens/BillScreen/BillScreen';
 import BillsComponentView from '../screens/ComponentCustom/BillsComponentView';
@@ -75,6 +77,8 @@ const MainStack = (params: any) => {
             <MStack.Screen name={routes.CUSTOMER_EDIT} component={CustomerEdit} />
             <MStack.Screen name={routes.PRODUCT_EDIT} component={ProductEditScreen} />
             <MStack.Screen name={routes.PRODUCT_DETAIL_SCREEN} component={ProductDetailScreen} />
+            <MStack.Screen name={routes.ADD_NEW_STAFF_SCREEN} component={AddNewStaffScreen} />
+            <MStack.Screen name={routes.LIST_STAFF_SCREEN} component={ListStaffScreen} />
         </MStack.Navigator>
     )
 }

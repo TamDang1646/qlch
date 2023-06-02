@@ -29,7 +29,7 @@ interface Props {
     route: any
 }
 const ProductEditScreen = (props: Props) => {
-    const { item } = props.route.params;
+    const { item, callBack } = props.route.params;
     const [images, setImages] = useState<any>([]);
     const [imagesLocal, setImagesLocal] = useState<any>([]);
     const [name, setName] = React.useState()
@@ -67,6 +67,7 @@ const ProductEditScreen = (props: Props) => {
                     icon: 'success',
                     autoHide: true
                 })
+                callBack?.(res.report)
             } else {
                 showMessage({
                     message: res.errorMsg,
@@ -84,6 +85,7 @@ const ProductEditScreen = (props: Props) => {
                     icon: 'success',
                     autoHide: true
                 })
+
                 NavigationService.back()
             } else {
                 showMessage({

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import * as React from 'react';
 
 import {
@@ -8,6 +9,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 
 import {
     faAdd,
@@ -19,10 +21,13 @@ import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import BaseButton from '../../components/BaseButton';
 import DropdownListNew from '../../components/DropdownListNew';
 import HeaderView from '../../components/HeaderView';
+import R from '../../components/R';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { colors } from '../../constants';
-import { products } from '../../mockData/product';
+import NavigationService from '../../navigation/NavigationService';
+import billsServices from '../../services/BillService';
+import productServices from '../../services/ProductServices';
 import {
     converTimeStamp,
     getMoneyFormat,
@@ -38,14 +43,25 @@ const BillCreateEdit = (props: Props) => {
     const [customerName, setCustomerName] = React.useState<string>('');
     const [customerPhoneNumber, setCustomerPhoneNumber] = React.useState<string>('');
     const [customerAddress, setCustomerAddress] = React.useState<string>('');
-    const [totalPrice, setTotalPrice] = React.useState<number>(0);
+    const [totalPrice, setTotalPrice] = React.useState<number>();
     const [deposit, setDeposit] = React.useState<number>(0);
     const [itemsList, setItemsList] = React.useState<any>([]);
     const [startDate, setStartDate] = React.useState(new Date().getTime());
-    const [endDate, setEndDate] = React.useState('');
+    const [endDate, setEndDate] = React.useState(new Date().getTime());
+    const [product, setProcduct] = React.useState([]);
 
     React.useEffect(() => {
-        let totalP: number = itemsList?.reduce((total: number, item: any) => total + item.price * item.quantity, 0);
+        void getProduct()
+    }, [])
+    const getProduct = async () => {
+
+        const res = await productServices.searchProduct({})
+        if (!res.errorCode) {
+            setProcduct(res.products)
+        }
+    }
+    React.useEffect(() => {
+        let totalP: number = itemsList?.reduce((total: number, item: any) => total + parseFloat(item.price) * parseInt(item.quantity), 0);
         setTotalPrice(totalP - deposit)
     }, [itemsList, deposit])
     React.useEffect(() => {
@@ -71,17 +87,17 @@ const BillCreateEdit = (props: Props) => {
     }
     const onSelectItem = (index: number) => {
         setItemsList([...itemsList, {
-            id: products[index].id,
-            name: products[index].name,
-            type: products[index].type,
-            price: products[index].price,
+            id: product[index]?.id,
+            name: product[index]?.name,
+            type: product[index]?.type,
+            price: product[index]?.price,
             quantity: '',
             size: ''
         }])
     }
     const onPressAddItem = () => {
         dropRef?.current?.drop({
-            data: products,//.filter((i) => i.parentId === 0),
+            data: product,//.filter((i) => i.parentId === 0),
             onSelect: onSelectItem,
             title: 'Chọn đồ',
             placeholderText: 'Tìm kiếm',
@@ -95,8 +111,6 @@ const BillCreateEdit = (props: Props) => {
         price: string,
         type: string,
     }, index: number) => {
-        console.log('itemSte', item);
-
         return (<View key={`item-${item.name}-${index}`} style={{
             //   width: verticalScale(343),
             borderWidth: 1,
@@ -173,7 +187,6 @@ const BillCreateEdit = (props: Props) => {
         }
     }
     //TODO date picker
-    console.log('startDate', startDate);
 
     const setStartDay = () => {
         DateTimePickerAndroid.open({
@@ -187,7 +200,7 @@ const BillCreateEdit = (props: Props) => {
     };
     const setEndDay = () => {
         DateTimePickerAndroid.open({
-            value: new Date(startDate),
+            value: new Date(endDate),
             onChange: (_, selectedDate) => {
                 setEndDate(selectedDate?.getTime())
             },
@@ -269,7 +282,7 @@ const BillCreateEdit = (props: Props) => {
             <TextInput
                 style={styles.inputStyle}
                 onChangeText={text => setDeposit(parseFloat(text))}
-                value={`${getMoneyFormat(deposit.toString())} VND`}
+                value={`${getMoneyFormat(deposit.toString())}`}
                 placeholder='Đặt cọc'
                 placeholderTextColor={colors.grayColor}
             />
@@ -277,26 +290,50 @@ const BillCreateEdit = (props: Props) => {
                 fontSize: verticalScale(18),
                 marginBottom: verticalScale(10)
             }} >
-                <TextBase title={`${getMoneyFormat(totalPrice.toString())} VND`} style={{
+                <TextBase title={`${getMoneyFormat(totalPrice?.toString())} VND`} style={{
                     fontSize: verticalScale(18),
                     marginBottom: verticalScale(10)
                 }} />
             </TextBase>
         </View>)
     }
-    const onNextPress = () => {
-        console.log('data', {
+    const onNextPress = async () => {
+        let data = {
             customer: {
                 name: customerName,
                 phoneNumber: customerPhoneNumber,
                 address: customerAddress
             },
-            items: itemsList,
+            items: itemsList.map((it: any) => ({
+                itemId: it.id,
+                quantity: it.quantity,
+                size: it.size
+            })),
+            address: customerAddress,
             totalPrice,
-            startDate,
-            endDate,
+            start: startDate,
+            end: endDate,
             deposit
-        });
+        }
+        R.Loading.show()
+        const res = await billsServices.createBills(data);
+        if (!res.errorCode) {
+            showMessage({
+                message: 'Tạo hóa đơn thành công!',
+                type: 'success',
+                icon: 'success',
+                autoHide: true
+            })
+            NavigationService.back()
+        } else {
+            showMessage({
+                message: res.errorMsg,
+                type: 'danger',
+                icon: 'danger',
+                autoHide: true
+            })
+        }
+        R.Loading.hide()
 
     }
     return (
@@ -314,6 +351,7 @@ const BillCreateEdit = (props: Props) => {
                 justifyContent: 'center',
                 marginVertical: verticalScale(10)
             }}
+                // eslint-disable-next-line @typescript-eslint/no-misused-promises
                 onPress={onNextPress}
             />
         </SafeAreaView>

@@ -28,8 +28,13 @@ interface Props {
 }
 const ProductDetailScreen = (props: Props) => {
     console.log(props);
+    const [data, setData] = React.useState();
     const { item } = props.route.params;
     console.log(item);
+    React.useEffect(() => {
+        setData(item)
+    }, [item])
+
     const renderItem = ({ item, index }: any) => {
         return item && <TouchableOpacity
             onPress={() => {
@@ -41,8 +46,11 @@ const ProductDetailScreen = (props: Props) => {
             <Image source={{ uri: item }} style={{ width: 380, height: 240 }} resizeMode={'cover'} />
         </TouchableOpacity>
     }
+    const callBack = (dt: any) => {
+        setData(dt)
+    }
     const onPressEdit = () => {
-        NavigationService.navigate(routes.PRODUCT_EDIT, { item })
+        NavigationService.navigate(routes.PRODUCT_EDIT, { item: data, callBack: (dt: any) => callBack(dt) })
     }
     const deleteProduct = async () => {
         const res = productServices.deleteProduct(item?.id)
@@ -91,15 +99,15 @@ const ProductDetailScreen = (props: Props) => {
         <SafeAreaView style={{ flex: 1 }}>
             <HeaderView title='Sản phẩm' renderRight={() => renderSave()} />
             <ScrollView style={{ flex: 1, margin: verticalScale(16) }}>
-                <TextBase title={item.name} style={{
+                <TextBase title={data?.name} style={{
                     fontSize: verticalScale(16),
                     fontWeight: '700',
                     width: '70%',
                     // flex:1
                 }} />
                 <View style={{ marginVertical: verticalScale(16) }}>
-                    {item?.image && item?.image?.length > 0 ?
-                        <CarouselImage data={item?.image.split(',')} renderItem={renderItem} viewCount={item?.image?.length} />
+                    {data?.image && data?.image?.length > 0 ?
+                        <CarouselImage data={data?.image?.split(',')} renderItem={renderItem} viewCount={item?.image?.length} />
                         : <Image
                             source={images.defaultImage}
                             style={{
@@ -111,17 +119,17 @@ const ProductDetailScreen = (props: Props) => {
                         />
                     }
                 </View>
-                <TextBase title={`Size: ${item.size}`} style={{
+                <TextBase title={`Size: ${data?.size}`} style={{
                     fontSize: verticalScale(16),
                     marginBottom: verticalScale(10)
                     // flex:1
                 }} />
-                <TextBase title={`Giá thuê: ${getMoneyFormat(item.price)} VND`} style={{
+                <TextBase title={`Giá thuê: ${getMoneyFormat(data?.price)} VND`} style={{
                     fontSize: verticalScale(16),
                     marginBottom: verticalScale(10)
                     // flex:1
                 }} />
-                <TextBase title={`Số lượng có: ${item.quantity}`} style={{
+                <TextBase title={`Số lượng có: ${data?.quantity}`} style={{
                     fontSize: verticalScale(16),
                     marginBottom: verticalScale(10)
                     // flex:1
