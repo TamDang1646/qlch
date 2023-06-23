@@ -15,17 +15,17 @@ import {
   TabView,
 } from 'react-native-tab-view';
 
-import {faAdd} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import { faAdd } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
 
 import InputBase from '../../components/InputBase';
 import R from '../../components/R';
-import {verticalScale} from '../../components/Scales';
+import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
-import {colors} from '../../constants';
-import {images} from '../../constants/images';
+import { colors } from '../../constants';
+import { images } from '../../constants/images';
 import NavigationService from '../../navigation/NavigationService';
-import {routes} from '../../navigation/Routes';
+import { routes } from '../../navigation/Routes';
 import productServices from '../../services/ProductServices';
 import {
   getMoneyFormat,
@@ -143,10 +143,29 @@ const ProductScreen = (props: Props) => {
       }} resizeMode='cover' />
       <View style={{ flex: 1, overflow: 'hidden', paddingVertical: verticalScale(4), paddingHorizontal: verticalScale(8) }}>
 
-        <TextBase title={item.name} style={[styles.titleDetail, { fontSize: verticalScale(14) }]} numberOfLines={2} ellipsizeMode='tail' />
+        <TextBase title={`MSP ${item?.id} - ${item.name}`} style={[styles.titleDetail, { fontSize: verticalScale(14) }]} numberOfLines={2} ellipsizeMode='tail' />
+        <TextBase title={`Số lượng còn: ${item?.quantity}`} style={[styles.titleDetail, { fontSize: verticalScale(14) }]} numberOfLines={2} ellipsizeMode='tail' />
         <TextBase title={`${getMoneyFormat(item.price)} VND`} style={styles.titleDetail} />
         <TextBase title={`Size: ${item.size}`} style={styles.titleDetail} />
       </View>
+      {item.quantity && item.quantity <= 0 ? <View
+        style={{
+          position: 'absolute',
+          backgroundColor: '#FFBDBD',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: verticalScale(120),
+          height: 40,
+          right: -40,
+          top: 20,
+          transform: [{ rotate: '45deg' }]
+        }}
+      >
+        <TextBase title={'Hết hàng'} style={{
+          fontSize: verticalScale(10),
+          color: 'red'
+        }} />
+      </View> : null}
     </TouchableOpacity>
   }
   const _renderItemView = (data: any) => {
@@ -303,7 +322,7 @@ const styles = StyleSheet.create({
   prodItem: {
     backgroundColor: 'white',
     width: verticalScale(150),
-    height: verticalScale(200),
+    height: verticalScale(250),
     borderRadius: 10,
     margin: verticalScale(16),
     overflow: 'hidden',

@@ -6,15 +6,18 @@ import {
     SafeAreaView,
     ScrollView,
     StyleSheet,
+    TouchableOpacity,
     View,
 } from 'react-native';
 
 import HeaderView from '../../components/HeaderView';
+import R from '../../components/R';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { images } from '../../constants/images';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
+import billsServices from '../../services/BillService';
 import {
     convertFullTimeStamp,
     getMoneyFormat,
@@ -26,11 +29,24 @@ interface Props {
 }
 const BillsComponentView = (props: Props) => {
     const { item } = props.route.params;
-    const
-        onPressEdit = () => {
-            props?.onClose?.()
-            NavigationService.navigate(routes.BILL_CREATE_EDIT_SCREEN, { bill: item, type: 'edit' })
+    const [data, setData] = React.useState();
+    const onPressEdit = () => {
+        props?.onClose?.()
+        NavigationService.navigate(routes.BILL_CREATE_EDIT_SCREEN, { bill: data, type: 'edit', callBack: () => getDetailBill() })
+    }
+    React.useEffect(() => {
+        void getDetailBill()
+
+    }, [])
+    const getDetailBill = async () => {
+        R.Loading.show()
+        const res = await billsServices.getDetailBill(item?.id);
+        if (!res.errorCode) {
+            setData(res.billss)
         }
+        R.Loading.hide()
+
+    }
     console.log('item', item, props);
 
     return (
@@ -58,7 +74,7 @@ const BillsComponentView = (props: Props) => {
                         borderRadius: verticalScale(50) / 2
                     }} resizeMode='stretch' />
                     <TextBase title={'Q-Fashion'} />
-                    <TextBase title={`${convertFullTimeStamp(item?.createAt)}`} style={{
+                    <TextBase title={`${convertFullTimeStamp(data?.createAt)}`} style={{
                         fontSize: verticalScale(14),
                         color: '#A8A8A8'
                     }} />
@@ -70,18 +86,18 @@ const BillsComponentView = (props: Props) => {
                     borderStyle: 'dashed'
                 }}>
                     <TextBase title={'Khách hàng:  '} style={styles.customerInfo}>
-                        <TextBase title={item?.customerName} style={styles.customerInfo_text} />
+                        <TextBase title={data?.customerName} style={styles.customerInfo_text} />
                     </TextBase>
                     <TextBase title={'SĐT:  '} style={styles.customerInfo}>
-                        <TextBase title={item?.customerPhonenumber} style={styles.customerInfo_text} />
+                        <TextBase title={data?.customerPhonenumber} style={styles.customerInfo_text} />
                     </TextBase>
                     <TextBase title={'Địa chỉ:  '} style={styles.customerInfo}>
-                        <TextBase title={item?.address} style={styles.customerInfo_text} />
+                        <TextBase title={data?.address} style={styles.customerInfo_text} />
                     </TextBase>
                     <TextBase title={'Thời gian thuê:  '} style={styles.customerInfo}>
-                        <TextBase title={item?.start?.slice(0, 10)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
+                        <TextBase title={data?.start?.slice(0, 10)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
                         <TextBase title={' - '} />
-                        <TextBase title={item?.end?.slice(0, 10)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
+                        <TextBase title={data?.end?.slice(0, 10)} style={{ fontSize: verticalScale(14), color: '#EB5500' }} />
                     </TextBase>
 
                 </View>
@@ -90,13 +106,13 @@ const BillsComponentView = (props: Props) => {
                 }}>
                     <View style={{ flexDirection: 'row', width: '100%', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                         <TextBase title={'Tổng hoá đơn:'} />
-                        <TextBase title={`${item?.totalPrice} đ`} />
+                        <TextBase title={`${data?.totalPrice} đ`} />
                     </View>
                     <View style={{ padding: verticalScale(4), borderWidth: 1, borderStyle: 'dashed', borderColor: '#D7D3D3' }}>
                         <ScrollView style={{ width: '100%', height: verticalScale(100) }}>
-                            {item?.items?.map((i: any) => {
+                            {data?.items?.map((i: any, index: number) => {
                                 return (
-                                    <View key={`item-bill-${i.id}`} style={{ flexDirection: 'row', width: '100%', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                                    <View key={`data-bill-${i.id}-${index}`} style={{ flexDirection: 'row', width: '100%', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                                         <TextBase title={i.name} style={{ flex: 3, color: '#827878' }} numberOfLines={1} ellipsizeMode='tail' />
                                         <TextBase title={`x${i.quantity}`} style={{ flex: 0.5, color: '#827878' }} />
                                         <TextBase title={getMoneyFormat(i.price) + ' đ'} style={{ flex: 1.5, color: '#827878', textAlign: 'right' }} />
@@ -107,15 +123,28 @@ const BillsComponentView = (props: Props) => {
                     </View>
                     <View style={{ marginTop: verticalScale(8) }}>
                         <TextBase title={'Tiền cọc:  '} style={styles.customerInfo}>
-                            <TextBase title={item?.deposit ? getMoneyFormat(item?.deposit) + ' đ' : '0 đ'} style={styles.customerInfo_text} />
+                            <TextBase title={data?.deposit ? getMoneyFormat(data?.deposit) + ' đ' : '0 đ'} style={styles.customerInfo_text} />
                         </TextBase>
                         <TextBase title={'Còn lại:  '} style={styles.customerInfo}>
-                            <TextBase title={item?.deposit ? getMoneyFormat(parseFloat(item?.totalPrice) - parseFloat(item?.deposit)) + ' đ' : getMoneyFormat(item?.totalPrice) + ' đ'} style={styles.customerInfo_text} />
+                            <TextBase title={data?.deposit ? getMoneyFormat(parseFloat(data?.totalPrice) - parseFloat(data?.deposit)) + ' đ' : getMoneyFormat(data?.totalPrice) + ' đ'} style={styles.customerInfo_text} />
                         </TextBase>
                     </View>
                 </View>
             </View>
-
+            <TouchableOpacity style={{
+                width: verticalScale(150),
+                height: verticalScale(50),
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 20,
+                backgroundColor: '#A2FDA0',
+                alignSelf: 'center',
+                margin: verticalScale(8)
+            }}
+                onPress={onPressEdit}
+            >
+                <TextBase title={'Chỉnh sửa'} />
+            </TouchableOpacity>
         </SafeAreaView>
     )
 }

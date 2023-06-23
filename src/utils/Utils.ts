@@ -41,7 +41,6 @@ export const convertFullTimeStamp = (timeStamp: number) => {
   const date = ('0' + date_ob.getDate()).slice(-2);
   const hour = ('0' + date_ob.getHours()).slice(-2);
   const minutes = ('0' + date_ob.getMinutes()).slice(-2);
-
   return hour + ':' + minutes + ' - ' + date + '/' + month + '/' + year
 }
 export const getMoneyFormat = (str: string, typeMoneyFormat = '100,000.00'): string => {

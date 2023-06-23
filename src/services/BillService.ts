@@ -11,12 +11,8 @@ class BillsServices extends ApiHelper {
         return { errorCode, errorMsg, billss: response };
     }
 
-    saveBills = async (billId: number) => {
-        let userId = await this.getUserId()
-        let code = await this.getUserCode()
-        const data = { billId, userId, code }
-
-        const response = await this.callApi(Configuration.API_URL + '/bills', data, 'bills', 'application/json', false)
+    saveBills = async (billId: number, data: any) => {
+        const response = await this.callApi(Configuration.API_URL + '/bills/' + billId, data, 'PATCH', 'application/json', false)
         let errorMsg = response?.message,
             errorCode = response?.errorCode;
         return { errorCode, errorMsg, save: response };
@@ -42,6 +38,12 @@ class BillsServices extends ApiHelper {
         let errorMsg = response?.message,
             errorCode = response?.errorCode;
         return { errorCode, errorMsg, data: response };
+    }
+    getDetailBill = async (billId: number) => {
+        const response = await this.callApi(Configuration.API_URL + '/bills/' + billId, {}, 'GET', 'application/json', false)
+        let errorMsg = response?.message,
+            errorCode = response?.errorCode;
+        return { errorCode, errorMsg, billss: response };
     }
 }
 const billsServices = new BillsServices()

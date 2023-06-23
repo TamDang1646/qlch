@@ -119,6 +119,11 @@ const ProductDetailScreen = (props: Props) => {
                         />
                     }
                 </View>
+                <TextBase title={`Mã SP: ${data?.id}`} style={{
+                    fontSize: verticalScale(16),
+                    marginBottom: verticalScale(10)
+                    // flex:1
+                }} />
                 <TextBase title={`Size: ${data?.size}`} style={{
                     fontSize: verticalScale(16),
                     marginBottom: verticalScale(10)

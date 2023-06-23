@@ -2,35 +2,35 @@
 import * as React from 'react';
 
 import {
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    TextInput,
-    TouchableOpacity,
-    View,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
+import {showMessage} from 'react-native-flash-message';
 
 import {
-    faAdd,
-    faClose,
+  faAdd,
+  faClose,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
 
 import BaseButton from '../../components/BaseButton';
 import DropdownListNew from '../../components/DropdownListNew';
 import HeaderView from '../../components/HeaderView';
 import R from '../../components/R';
-import { verticalScale } from '../../components/Scales';
+import {verticalScale} from '../../components/Scales';
 import TextBase from '../../components/TextBase';
-import { colors } from '../../constants';
+import {colors} from '../../constants';
 import NavigationService from '../../navigation/NavigationService';
 import billsServices from '../../services/BillService';
 import productServices from '../../services/ProductServices';
 import {
-    converTimeStamp,
-    getMoneyFormat,
+  converTimeStamp,
+  getMoneyFormat,
 } from '../../utils/Utils';
 
 interface Props {
@@ -66,12 +66,12 @@ const BillCreateEdit = (props: Props) => {
     }, [itemsList, deposit])
     React.useEffect(() => {
         if (type == 'edit' && bill) {
-            setCustomerName(bill?.customer?.name)
-            setCustomerPhoneNumber(bill?.customer?.phoneNumber)
-            setCustomerAddress(bill?.customer?.address)
+            setCustomerName(bill?.customerName)
+            setCustomerPhoneNumber(bill?.customerPhonenumber)
+            setCustomerAddress(bill?.customerAddress)
             setItemsList(bill?.items)
-            setStartDate(bill?.startDate)
-            setEndDate(bill?.endDate)
+            setStartDate(Date.parse(bill.start))
+            setEndDate(Date.parse(bill.end))
             setDeposit(bill?.deposit)
         }
     }, [type])
@@ -91,7 +91,7 @@ const BillCreateEdit = (props: Props) => {
             name: product[index]?.name,
             type: product[index]?.type,
             price: product[index]?.price,
-            quantity: '',
+            quantity: 0,
             size: ''
         }])
     }
@@ -103,14 +103,18 @@ const BillCreateEdit = (props: Props) => {
             placeholderText: 'Tìm kiếm',
         })
     }
+    console.log('item', itemsList);
+
     const renderERCard = (item: {
         id: number,
         name: string,
         size: string,
-        quantity: string,
+        quantity: number,
         price: string,
         type: string,
     }, index: number) => {
+
+
         return (<View key={`item-${item.name}-${index}`} style={{
             //   width: verticalScale(343),
             borderWidth: 1,
@@ -209,6 +213,8 @@ const BillCreateEdit = (props: Props) => {
         });
     };
     //TODO
+
+
     const renderForm = () => {
         return (<View style={{ flex: 1, margin: verticalScale(16) }}>
             {/* <View style={styles.customerInfo}> */}
@@ -258,6 +264,7 @@ const BillCreateEdit = (props: Props) => {
 
                     <TextBase title={'Thuê từ ngày'} style={{ position: 'absolute', top: -15, left: 7, flexDirection: 'row' }} />
 
+                    {/* <TextBase title={converTimeStamp(startDate)} style={styles.time} /> */}
                     {startDate
                         ? <TextBase title={converTimeStamp(startDate)} style={styles.time} />
                         : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
@@ -268,6 +275,7 @@ const BillCreateEdit = (props: Props) => {
                     onPress={() => onSelectTime(1)}
                 >
                     <TextBase title={'Đến ngày'} style={{ position: 'absolute', top: -15, left: 7, flexDirection: 'row' }} />
+                    {/* <TextBase title={converTimeStamp(endDate)} style={styles.time} /> */}
                     {endDate
                         ? <TextBase title={converTimeStamp(endDate)} style={styles.time} />
                         : <TextBase title={'DD/MM/YYYY'} style={[styles.time, { color: colors.inputBorderColor }]} />
@@ -282,7 +290,7 @@ const BillCreateEdit = (props: Props) => {
             <TextInput
                 style={styles.inputStyle}
                 onChangeText={text => setDeposit(parseFloat(text))}
-                value={`${getMoneyFormat(deposit.toString())}`}
+                value={deposit.toString()}
                 placeholder='Đặt cọc'
                 placeholderTextColor={colors.grayColor}
             />
@@ -302,11 +310,12 @@ const BillCreateEdit = (props: Props) => {
             customer: {
                 name: customerName,
                 phoneNumber: customerPhoneNumber,
-                address: customerAddress
+                address: customerAddress,
+                ... (bill?.customerId && { id: bill?.customerId })
             },
             items: itemsList.map((it: any) => ({
                 itemId: it.id,
-                quantity: it.quantity,
+                quantity: parseInt(it.quantity),
                 size: it.size
             })),
             address: customerAddress,
@@ -316,22 +325,46 @@ const BillCreateEdit = (props: Props) => {
             deposit
         }
         R.Loading.show()
-        const res = await billsServices.createBills(data);
-        if (!res.errorCode) {
-            showMessage({
-                message: 'Tạo hóa đơn thành công!',
-                type: 'success',
-                icon: 'success',
-                autoHide: true
-            })
-            NavigationService.back()
-        } else {
-            showMessage({
-                message: res.errorMsg,
-                type: 'danger',
-                icon: 'danger',
-                autoHide: true
-            })
+        if (type != 'edit') {
+            const res = await billsServices.createBills(data);
+            if (!res.errorCode) {
+                showMessage({
+                    message: 'Tạo hóa đơn thành công!',
+                    type: 'success',
+                    icon: 'success',
+                    autoHide: true
+                })
+                NavigationService.back()
+            } else {
+                showMessage({
+                    message: res.errorMsg,
+                    type: 'danger',
+                    icon: 'danger',
+                    autoHide: true
+                })
+            }
+        }
+        else {
+            console.log('data', data);
+
+            const res = await billsServices.saveBills(bill.id, data);
+            if (!res.errorCode) {
+                showMessage({
+                    message: 'Sửa hóa đơn thành công!',
+                    type: 'success',
+                    icon: 'success',
+                    autoHide: true
+                })
+                props.route.params?.callBack?.()
+                NavigationService.back()
+            } else {
+                showMessage({
+                    message: res.errorMsg,
+                    type: 'danger',
+                    icon: 'danger',
+                    autoHide: true
+                })
+            }
         }
         R.Loading.hide()
 
