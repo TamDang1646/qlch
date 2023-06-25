@@ -87,15 +87,26 @@ const BillCreateEdit = (props: Props) => {
         } : item))
     }
     const onSelectItem = (index: number) => {
-        setItemsList([...itemsList, {
-            itemId: product[index]?.id,
-            name: product[index]?.name,
-            type: product[index]?.type,
-            price: product[index]?.price,
-            quantity: 0,
-            billId: bill?.id,
-            size: ''
-        }])
+        if (product[index]?.quantity <= 0) {
+            showMessage({
+                message: 'Mặt hàng này đã hết!',
+                type: 'danger',
+                icon: 'danger',
+                autoHide: true
+            })
+        }
+        else {
+
+            setItemsList([...itemsList, {
+                itemId: product[index]?.id,
+                name: product[index]?.name,
+                type: product[index]?.type,
+                price: product[index]?.price,
+                quantity: 0,
+                billId: bill?.id,
+                size: product[index]?.size
+            }])
+        }
     }
     const onPressAddItem = () => {
         dropRef?.current?.drop({
@@ -307,7 +318,6 @@ const BillCreateEdit = (props: Props) => {
             </TextBase>
         </View>)
     }
-    console.log('delId', listDelId);
 
     const onNextPress = async () => {
         let data = {

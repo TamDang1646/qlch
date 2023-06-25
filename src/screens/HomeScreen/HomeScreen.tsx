@@ -2,38 +2,38 @@
 import * as React from 'react';
 
 import {
-    FlatList,
-    Image,
-    RefreshControl,
-    SafeAreaView,
-    StyleSheet,
-    TouchableOpacity,
-    View,
+  FlatList,
+  Image,
+  RefreshControl,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {
-    faClock,
-    faFileAlt,
-    faList,
-    faMoneyBill,
-    faProcedures,
-    faTruckFast,
-    faUser,
-    faUserFriends,
+  faClock,
+  faFileAlt,
+  faList,
+  faMoneyBill,
+  faProcedures,
+  faTruckFast,
+  faUser,
+  faUserFriends,
 } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { useDrawerStatus } from '@react-navigation/drawer';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {useDrawerStatus} from '@react-navigation/drawer';
 
-import { verticalScale } from '../../components/Scales';
+import {verticalScale} from '../../components/Scales';
 import TextBase from '../../components/TextBase';
-import { colors } from '../../constants';
-import { images } from '../../constants/images';
+import {colors} from '../../constants';
+import {images} from '../../constants/images';
 import NavigationService from '../../navigation/NavigationService';
-import { routes } from '../../navigation/Routes';
+import {routes} from '../../navigation/Routes';
 import billsServices from '../../services/BillService';
-import { useAppSelector } from '../../stores';
-import { getMoneyFormat } from '../../utils/Utils';
+import {useAppSelector} from '../../stores';
+import {getMoneyFormat} from '../../utils/Utils';
 
 interface Props {
     navigation: any
@@ -88,7 +88,7 @@ const HomeScreen = (props: Props) => {
                         style={[styles.dash, {}]}>
                         <FontAwesomeIcon icon={faMoneyBill} size={verticalScale(30)} color='#F96868' style={{ marginBottom: verticalScale(8) }} />
                         <TextBase title={'Money'} style={styles.text} />
-                        <TextBase title={getMoneyFormat(totalM)} style={styles.text1} />
+                        <TextBase title={getMoneyFormat(totalM)||'0'} style={styles.text1} />
                     </LinearGradient>
                     <LinearGradient
                         colors={['#99E7FF', '#89DCFF', '#73E6FF']}
@@ -112,7 +112,7 @@ const HomeScreen = (props: Props) => {
                         style={[styles.dash, {}]}>
                         <FontAwesomeIcon icon={faUserFriends} size={verticalScale(30)} color='#F96868' style={{ marginBottom: verticalScale(8) }} />
                         <TextBase title={'Customers'} style={styles.text} />
-                        <TextBase title={totalC} style={styles.text1} />
+                        <TextBase title={totalC||'0'} style={styles.text1} />
                     </LinearGradient>
                 </View>
             </View>

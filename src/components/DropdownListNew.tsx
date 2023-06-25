@@ -172,7 +172,7 @@ class DropdownListNew extends PureComponent<Props, States> {
         style={styles.item}
       >
         <TextBase
-          title={`${item.tagItem || ''}${item.name || item.address || item.addressDetail || item.label}`}
+          title={`${item.tagItem || ''}${item.name || item.address || item.addressDetail || item.label}${item?.quantity && ` - SL còn: ${item?.quantity}`}`}
           numberOfLines={2}
           style={[{
             fontSize: verticalScale(15.5),
