@@ -63,7 +63,7 @@ const BillScreen = (props: Props) => {
         return (
             <TouchableOpacity
                 onPress={() => onPressBill(item)}
-                style={[styles.billsItem, { backgroundColor: item.expire ? item.paid ? '#C8FFA6' : '#FFD9D9' : styles.billsItem.backgroundColor }]}>
+                style={[styles.billsItem, { backgroundColor: item.paid ? '#C8FFA6' : item.expire ? '#FFD9D9' : styles.billsItem.backgroundColor }]}>
                 <View style={styles.itemLable}>
                     <FontAwesomeIcon icon={faUser} style={styles.itemLableIcon} color='green' />
                     <TextBase title={`${item?.customerName} - ${item?.customerPhonenumber}`} />

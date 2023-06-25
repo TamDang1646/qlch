@@ -6,7 +6,6 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
 
 import {
     faMoneyBill,
@@ -19,7 +18,6 @@ import R from '../../components/R';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
 import { colors } from '../../constants';
-import { bills } from '../../mockData/bills';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
 import userService from '../../services/UserService';
@@ -103,6 +101,7 @@ export const CustomerViewScreen = (props: Props) => {
                 borderBottomWidth: 1,
                 borderStyle: 'dashed',
                 margin: verticalScale(16),
+                flex: 1
 
             }}>
                 <TextBase title={'Khách hàng:  '} style={styles.customerInfo}>
@@ -115,7 +114,7 @@ export const CustomerViewScreen = (props: Props) => {
                     <TextBase title={customer?.address} style={styles.customerInfo_text} />
                 </TextBase>
             </View>
-            <View style={{
+            {/* <View style={{
                 flex: 1
             }}>
                 <TextBase title={'Đơn đã thuê:'} style={{
@@ -129,7 +128,7 @@ export const CustomerViewScreen = (props: Props) => {
                 // isRefresh={isRefresh}
                 >
                 </FlatList>
-            </View>
+            </View> */}
             <TouchableOpacity style={{
                 width: verticalScale(150),
                 height: verticalScale(50),

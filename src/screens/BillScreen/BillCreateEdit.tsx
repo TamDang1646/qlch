@@ -303,7 +303,7 @@ const BillCreateEdit = (props: Props) => {
             <TextInput
                 style={styles.inputStyle}
                 onChangeText={text => setDeposit(parseFloat(text))}
-                value={deposit.toString()}
+                value={deposit}
                 placeholder='Đặt cọc'
                 placeholderTextColor={colors.grayColor}
             />

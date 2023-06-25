@@ -9,11 +9,13 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
 
 import HeaderView from '../../components/HeaderView';
 import R from '../../components/R';
 import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
+import { colors } from '../../constants';
 import { images } from '../../constants/images';
 import NavigationService from '../../navigation/NavigationService';
 import { routes } from '../../navigation/Routes';
@@ -48,7 +50,32 @@ const BillsComponentView = (props: Props) => {
 
     }
     console.log('item', item, props);
+    const onPressAccept = async () => {
+        let dt = {
+            ...data,
+            paid: 1,
+            deposit: parseFloat(data?.totalPrice)
+        }
+        const res = await billsServices.saveBills(data?.id, dt);
+        if (!res.errorCode) {
+            showMessage({
+                message: 'Sửa hóa đơn thành công!',
+                type: 'success',
+                icon: 'success',
+                autoHide: true
+            })
+            void getDetailBill()
+            props.route.params?.callBack?.()
+        } else {
+            showMessage({
+                message: res.errorMsg,
+                type: 'danger',
+                icon: 'danger',
+                autoHide: true
+            })
+        }
 
+    }
     return (
         <SafeAreaView
             style={{
@@ -122,7 +149,7 @@ const BillsComponentView = (props: Props) => {
                         </ScrollView>
                     </View>
                     <View style={{ marginTop: verticalScale(8) }}>
-                        <TextBase title={'Tiền cọc:  '} style={styles.customerInfo}>
+                        <TextBase title={'Đã thanh toán:  '} style={styles.customerInfo}>
                             <TextBase title={data?.deposit ? getMoneyFormat(data?.deposit) + ' đ' : '0 đ'} style={styles.customerInfo_text} />
                         </TextBase>
                         <TextBase title={'Còn lại:  '} style={styles.customerInfo}>
@@ -131,20 +158,43 @@ const BillsComponentView = (props: Props) => {
                     </View>
                 </View>
             </View>
-            <TouchableOpacity style={{
-                width: verticalScale(150),
-                height: verticalScale(50),
+            <View style={{
+                flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 20,
-                backgroundColor: '#A2FDA0',
-                alignSelf: 'center',
-                margin: verticalScale(8)
-            }}
-                onPress={onPressEdit}
-            >
-                <TextBase title={'Chỉnh sửa'} />
-            </TouchableOpacity>
+                justifyContent: 'space-evenly'
+            }}>
+
+                <TouchableOpacity style={{
+                    width: verticalScale(150),
+                    height: verticalScale(50),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 20,
+                    backgroundColor: '#A2FDA0',
+                    alignSelf: 'center',
+                    margin: verticalScale(8)
+                }}
+                    onPress={onPressEdit}
+                >
+                    <TextBase title={'Chỉnh sửa'} />
+                </TouchableOpacity>
+                <TouchableOpacity style={{
+                    width: verticalScale(150),
+                    height: verticalScale(50),
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: 20,
+                    backgroundColor: data?.paid == 0 ? '#A2FDA0' : colors.grayColor,
+                    alignSelf: 'center',
+                    margin: verticalScale(8),
+                }}
+                    // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                    onPress={onPressAccept}
+                    disabled={data?.paid == 0 ? false : true}
+                >
+                    <TextBase title={'Xác nhận thanh toán'} />
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     )
 }
