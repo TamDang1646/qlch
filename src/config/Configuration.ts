@@ -1,5 +1,5 @@
 export default class Configuration {
-    static API_URL = 'http://103.166.183.203:7000';
+    static API_URL = 'https://645df2d8470d-10108363563142932648.ngrok-free.app';
     // static API_URL = 'https://motel-api-production-f410.up.railway.app';
     // static API_URL = 'https://motel-api-production.up.railway.app';
     static UPLOAD_URL = '';
