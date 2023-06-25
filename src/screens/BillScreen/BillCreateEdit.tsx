@@ -2,35 +2,35 @@
 import * as React from 'react';
 
 import {
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  View,
+    SafeAreaView,
+    ScrollView,
+    StyleSheet,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from 'react-native';
-import {showMessage} from 'react-native-flash-message';
+import { showMessage } from 'react-native-flash-message';
 
 import {
-  faAdd,
-  faClose,
+    faAdd,
+    faClose,
 } from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {DateTimePickerAndroid} from '@react-native-community/datetimepicker';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 import BaseButton from '../../components/BaseButton';
 import DropdownListNew from '../../components/DropdownListNew';
 import HeaderView from '../../components/HeaderView';
 import R from '../../components/R';
-import {verticalScale} from '../../components/Scales';
+import { verticalScale } from '../../components/Scales';
 import TextBase from '../../components/TextBase';
-import {colors} from '../../constants';
+import { colors } from '../../constants';
 import NavigationService from '../../navigation/NavigationService';
 import billsServices from '../../services/BillService';
 import productServices from '../../services/ProductServices';
 import {
-  converTimeStamp,
-  getMoneyFormat,
+    converTimeStamp,
+    getMoneyFormat,
 } from '../../utils/Utils';
 
 interface Props {
@@ -49,7 +49,7 @@ const BillCreateEdit = (props: Props) => {
     const [startDate, setStartDate] = React.useState(new Date().getTime());
     const [endDate, setEndDate] = React.useState(new Date().getTime());
     const [product, setProcduct] = React.useState([]);
-
+    const [listDelId, setListDelId] = React.useState([]);
     React.useEffect(() => {
         void getProduct()
     }, [])
@@ -77,6 +77,7 @@ const BillCreateEdit = (props: Props) => {
     }, [type])
 
     const deleteEr = async (index: number) => {
+        await setListDelId([...listDelId, itemsList[index].id])
         await setItemsList(itemsList.filter((_: any, idx: number) => idx !== index))
     }
     const onChangeItems = (text: string, field: string, index: number) => {
@@ -87,11 +88,12 @@ const BillCreateEdit = (props: Props) => {
     }
     const onSelectItem = (index: number) => {
         setItemsList([...itemsList, {
-            id: product[index]?.id,
+            itemId: product[index]?.id,
             name: product[index]?.name,
             type: product[index]?.type,
             price: product[index]?.price,
             quantity: 0,
+            billId: bill?.id,
             size: ''
         }])
     }
@@ -305,6 +307,8 @@ const BillCreateEdit = (props: Props) => {
             </TextBase>
         </View>)
     }
+    console.log('delId', listDelId);
+
     const onNextPress = async () => {
         let data = {
             customer: {
@@ -313,16 +317,13 @@ const BillCreateEdit = (props: Props) => {
                 address: customerAddress,
                 ... (bill?.customerId && { id: bill?.customerId })
             },
-            items: itemsList.map((it: any) => ({
-                itemId: it.id,
-                quantity: parseInt(it.quantity),
-                size: it.size
-            })),
+            items: itemsList,
             address: customerAddress,
             totalPrice,
             start: startDate,
             end: endDate,
-            deposit
+            deposit,
+            ...(type == 'edit' && { deleteBillItemIds: listDelId }),
         }
         R.Loading.show()
         if (type != 'edit') {

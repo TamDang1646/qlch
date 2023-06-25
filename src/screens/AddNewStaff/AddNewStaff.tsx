@@ -100,6 +100,8 @@ const AddNewStaffScreen = (props: Props) => {
                     icon: 'success',
                     autoHide: true,
                 });
+                NavigationService.back()
+                R.Loading.hide()
             }
             return
         } else {
@@ -111,7 +113,7 @@ const AddNewStaffScreen = (props: Props) => {
                     icon: 'danger',
                     autoHide: true,
                 });
-
+                R.Loading.hide()
             } else {
                 R.showMessage({
                     message: 'Cập nhật thành công',
@@ -120,9 +122,9 @@ const AddNewStaffScreen = (props: Props) => {
                     autoHide: true,
                 });
                 NavigationService.back()
+                R.Loading.hide()
             }
 
-            R.Loading.hide()
 
 
         }
